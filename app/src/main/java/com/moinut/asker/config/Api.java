@@ -9,4 +9,6 @@ public class Api {
     public static final String API_REGISTER = "/asker/register.php";
     public static final String API_GET_ALL_QUESTIONS = "/asker/getAllQuestions.php";
     public static final String API_ASK_QUESTION = "/asker/askQuestion.php";
+    public static final String API_UPDATE_USER_INFO = "/asker/updateUserInfo.php";
+    public static final String API_GET_USER_INFO = "/asker/getUserInfo.php";
 }
