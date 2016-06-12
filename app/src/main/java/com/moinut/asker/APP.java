@@ -31,13 +31,19 @@ public class APP extends Application {
         String userJson;
         mUser = user;
         if (user == null) {
-            APP.setLogin(false);
+            setLogin(false);
             userJson = "";
         } else {
             userJson = new Gson().toJson(user);
-            APP.setLogin(true);
+            setLogin(true);
         }
-        SPUtils.set(context, Const.SP_KEY_USER, userJson);
+        SPUtils.put(context, Const.SP_KEY_USER, userJson);
+    }
+
+    public static void exitUser(Context context) {
+        setLogin(false);
+        mUser = null;
+        SPUtils.remove(context, Const.SP_KEY_USER);
     }
 
     public static User getUser(Context context) {

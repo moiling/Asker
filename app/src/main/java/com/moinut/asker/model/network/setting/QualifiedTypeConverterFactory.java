@@ -11,7 +11,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
-
 public class QualifiedTypeConverterFactory extends Converter.Factory {
     private final Converter.Factory jsonFactory;
     private final Converter.Factory xmlFactory;

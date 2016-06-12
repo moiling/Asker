@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.moinut.asker.BuildConfig;
 import com.moinut.asker.config.Api;
+import com.moinut.asker.model.bean.ApiWrapper;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.model.bean.UploadWrapper;
 import com.moinut.asker.model.bean.User;
@@ -104,8 +105,13 @@ public enum RequestManager {
 
     // ------------------------------------------------------------------
 
-    public Subscription login(Subscriber<User> subscriber, String accountId, String password) {
-        Observable<User> observable = mApiService.login(accountId, password)
+    public Subscription login(Subscriber<ApiWrapper<User>> subscriber, String accountId, String password) {
+        Observable<ApiWrapper<User>> observable = mApiService.login(accountId, password);
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription register(Subscriber<String> subscriber, String accountId, String password, String type) {
+        Observable<String> observable = mApiService.register(accountId, password, type)
                 .map(new ApiWrapperFunc<>());
         return emitObservable(observable, subscriber);
     }
@@ -113,6 +119,12 @@ public enum RequestManager {
     public Subscription getAllQuestions(Subscriber<List<Question>> subscriber, int page, int count) {
         Observable<List<Question>> observable = mApiService.getAllQuestions(page, count)
                 .map(new PageWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription askQuestion(Subscriber<String> subscriber, String token, String title, String content, String type) {
+        Observable<String> observable = mApiService.askQuestion(token, title, content, type)
+                .map(new ApiWrapperFunc<>());
         return emitObservable(observable, subscriber);
     }
 }

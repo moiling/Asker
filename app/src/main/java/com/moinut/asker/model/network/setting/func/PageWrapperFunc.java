@@ -8,7 +8,7 @@ import com.moinut.asker.model.bean.PageWrapper;
 import rx.functions.Func1;
 
 public class PageWrapperFunc<T> implements Func1<PageWrapper<T>, T> {
-    public static final String TAG = "PageWrapperFunc";
+    private static final String TAG = PageWrapperFunc.class.getName();
 
     @Override
     public T call(PageWrapper<T> wrapper) {

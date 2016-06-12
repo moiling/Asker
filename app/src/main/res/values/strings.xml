@@ -20,5 +20,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="send">Send</string>
+    <string name="please_wait">请稍等</string>
+    <string name="exit">EXIT</string>
 
 </resources>

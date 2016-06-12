@@ -29,7 +29,8 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".ui.activity.AskActivity"></activity>
+        <activity android:name=".ui.activity.AskActivity" />
+        <activity android:name=".ui.activity.UserDetailActivity"></activity>
     </application>
 
 </manifest>

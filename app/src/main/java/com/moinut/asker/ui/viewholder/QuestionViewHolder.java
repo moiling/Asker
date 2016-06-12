@@ -36,7 +36,12 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
     public void setData(Question data) {
         title.setText(data.getTitle());
         content.setText(data.getContent());
-        author.setText(data.getAuthorName());
+        String name = data.getAuthorName();
+        if (name == null) {
+            author.setText("一位没有名字的用户");
+        } else {
+            author.setText(data.getAuthorName());
+        }
         date.setText(data.getDateFormat());
         type.setText(data.getType());
         answerCount.setText(data.getAnswerCount() + "");

@@ -3,14 +3,15 @@ package com.moinut.asker.ui.component.task.progress;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 public class ProgressDialogHandler extends Handler {
 
     public static final int SHOW_PROGRESS_DIALOG = 1;
     public static final int DISMISS_PROGRESS_DIALOG = 2;
 
-    private AlertDialog pd;
+    private MaterialDialog pd;
 
     private Context context;
     private boolean cancelable;
@@ -26,10 +27,10 @@ public class ProgressDialogHandler extends Handler {
 
     private void initProgressDialog() {
         if (pd == null) {
-            pd = new AlertDialog.Builder(context)
-            /*        .progress(true, 0)*/
-                    .create();
-            pd.setTitle("Loading...");
+            pd = new MaterialDialog.Builder(context)
+                    .progress(true, 0)
+                    .build();
+            pd.setContent("Loading...");
 
             pd.setCancelable(cancelable);
 

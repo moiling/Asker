@@ -8,7 +8,7 @@ import com.moinut.asker.model.bean.ApiWrapper;
 import rx.functions.Func1;
 
 public class ApiWrapperFunc<T> implements Func1<ApiWrapper<T>, T> {
-    public static final String TAG = "ApiWrapperFunc";
+    private static final String TAG = ApiWrapperFunc.class.getName();
 
     @Override
     public T call(ApiWrapper<T> wrapper) {

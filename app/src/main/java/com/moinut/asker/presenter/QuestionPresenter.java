@@ -29,8 +29,10 @@ public class QuestionPresenter {
             @Override
             public void onNext(List<Question> questions) {
                 super.onNext(questions);
-                v.onRefreshEnd(questions);
-                page++;
+                if (v != null) {
+                    v.onRefreshEnd(questions);
+                    page++;
+                }
             }
         }), page, count);
     }
@@ -40,8 +42,10 @@ public class QuestionPresenter {
             @Override
             public void onNext(List<Question> questions) {
                 super.onNext(questions);
-                v.onLoadMoreEnd(questions);
-                page++;
+                if (v != null) {
+                    v.onLoadMoreEnd(questions);
+                    page++;
+                }
             }
         }), page, count);
     }

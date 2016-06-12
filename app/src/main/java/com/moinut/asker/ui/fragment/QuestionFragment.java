@@ -26,12 +26,12 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("WeakerAccess")
 public class QuestionFragment extends BaseFragment implements
         RecyclerArrayAdapter.OnLoadMoreListener,
         SwipeRefreshLayout.OnRefreshListener,
         IQuestionView {
 
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.rv_questions)
     EasyRecyclerView mRecyclerView;
 
@@ -62,7 +62,7 @@ public class QuestionFragment extends BaseFragment implements
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ScreenUtils.paddingToNavigationBarWithStatusBar(mRecyclerView.getRecyclerView());
+        ScreenUtils.paddingToNavigationBar(mRecyclerView.getRecyclerView());
         mRecyclerView.setAdapterWithProgress(mAdapter);
         mRecyclerView.setRefreshListener(this);
         mRecyclerView.setRefreshingColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
@@ -76,6 +76,11 @@ public class QuestionFragment extends BaseFragment implements
         mAdapter.setMore(R.layout.view_question_more, this);
         mAdapter.setNoMore(R.layout.view_question_nomore);
         mAdapter.setError(R.layout.view_question_empty).setOnClickListener(v -> mAdapter.resumeMore());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         onRefresh();
     }
 

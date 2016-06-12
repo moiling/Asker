@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:padding_navigation="true">
+    android:layout_height="match_parent">
 
     <!--<android.support.design.widget.CoordinatorLayout-->
     <!--android:layout_width="match_parent"-->
@@ -41,7 +40,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_send"
-        app:padding_navigation="true" />
+        app:margin_navigation="true" />
 
     <!--</android.support.design.widget.CoordinatorLayout>-->
 

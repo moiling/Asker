@@ -15,6 +15,7 @@ import com.moinut.asker.utils.TimeUtils;
  "authorName": "MOILING",
  "content": "这里是详细内容之类巴拉巴拉的"
  */
+
 public class Question {
     private int id;
     private int contentId;

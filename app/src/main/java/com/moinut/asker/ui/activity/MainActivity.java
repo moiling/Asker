@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.model.bean.User;
@@ -27,19 +26,16 @@ import com.moinut.asker.utils.FragUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("WeakerAccess")
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.fab)
     FloatingActionButton mFab;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawer;
-    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
 
@@ -56,7 +52,6 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
-        initUser();
 
         FragmentManager manager = getSupportFragmentManager();
         if (mQuestionFragment == null) {
@@ -66,9 +61,15 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initUser();
+    }
+
     private void initUser() {
         // TODO 测试登录
-        APP.setUser(this, new Gson().fromJson("{"+
+        /*APP.setUser(this, new Gson().fromJson("{"+
                 "    \"id\": 5,\n" +
                 "    \"type\": \"student\",\n" +
                 "    \"nickName\": \"MOILING\",\n" +
@@ -76,14 +77,19 @@ public class MainActivity extends BaseActivity
                 "    \"sex\": \"male\",\n" +
                 "    \"tel\": \"110\",\n" +
                 "    \"email\": \"super8moi@gmail.com\",\n" +
-                "    \"token\": \"3e2d3c1fdb5ae064c435d07613c5ef9f4f482e38\""+
-                "}", User.class));
+                "    \"token\": \"0464816bc2cd03bc5e9d9b546fe0b6f71a91225b\""+
+                "}", User.class));*/
 
         if ((mUser = APP.getUser(this)) == null) {
-            mUserName.setText("未登录, 请点击登录");
+            mUserName.setText("点击登录");
             mUserName.setOnClickListener(new ToLogin());
         } else {
-            mUserName.setText(mUser.getNickName());
+            String name = mUser.getNickName();
+            if (name == null) {
+                mUserName.setText("野生用户, 快点击完善");
+            } else {
+                mUserName.setText(name);
+            }
             mUserName.setOnClickListener(new ToDetails());
         }
     }
@@ -91,7 +97,14 @@ public class MainActivity extends BaseActivity
     private void initView() {
         initToolbar();
         initNavHeader();
-        mFab.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, AskActivity.class)));
+
+        mFab.setOnClickListener(view -> {
+            if (APP.getUser(this) != null) {
+                startActivity(new Intent(MainActivity.this, AskActivity.class));
+            } else {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -121,7 +134,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(item);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -187,7 +200,7 @@ public class MainActivity extends BaseActivity
 
         @Override
         public void onClick(View v) {
-            // TODO 跳转详细页面
+            startActivity(new Intent(MainActivity.this, UserDetailActivity.class));
         }
     }
 }

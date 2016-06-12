@@ -2,6 +2,7 @@ package com.moinut.asker.config;
 
 public class Api {
     public static final int API_STATUS_SUCCESS = 200;
+
     public static final String END_POINT_MOINUT = "http://api.moinut.com";
 
     public static final String API_LOGIN = "/asker/login.php";
