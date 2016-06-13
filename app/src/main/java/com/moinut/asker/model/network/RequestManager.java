@@ -5,8 +5,12 @@ import android.support.annotation.NonNull;
 
 import com.moinut.asker.BuildConfig;
 import com.moinut.asker.config.Api;
+import com.moinut.asker.config.Const;
+import com.moinut.asker.model.bean.Answer;
 import com.moinut.asker.model.bean.ApiWrapper;
 import com.moinut.asker.model.bean.Question;
+import com.moinut.asker.model.bean.Student;
+import com.moinut.asker.model.bean.Teacher;
 import com.moinut.asker.model.bean.UploadWrapper;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.model.network.service.ApiService;
@@ -125,6 +129,49 @@ public enum RequestManager {
     public Subscription askQuestion(Subscriber<String> subscriber, String token, String title, String content, String type) {
         Observable<String> observable = mApiService.askQuestion(token, title, content, type)
                 .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+
+    public Subscription getStudentInfo(Subscriber<Student> subscriber, String token) {
+        Observable<Student> observable = mApiService.getStudentInfo(token, Const.API_STUDENT)
+                .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription getTeacherInfo(Subscriber<Teacher> subscriber, String token) {
+        Observable<Teacher> observable = mApiService.getTeacherInfo(token, Const.API_TEACHER)
+                .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription updateStudentInfo(Subscriber<String> subscriber, String token,
+                                          String nickName, String sex, String tel, String email,
+                                          String college, String academy, int year, String major) {
+        Observable<String> observable = mApiService.updateUserInfo(token, Const.API_STUDENT, nickName,
+                sex, tel, email, college, academy, year, major, "")
+                .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription updateTeacherInfo(Subscriber<String> subscriber, String token,
+                                          String nickName, String sex, String tel, String email,
+                                          String college, String academy, String realName) {
+        Observable<String> observable = mApiService.updateUserInfo(token, Const.API_TEACHER, nickName,
+                sex, tel, email, college, academy, 0, "", realName)
+                .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription answer(Subscriber<String> subscriber, String token, int questionId, String content) {
+        Observable<String> observable = mApiService.answer(token, questionId, content)
+                .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription getAnswers(Subscriber<List<Answer>> subscriber, int questionId, int page, int count) {
+        Observable<List<Answer>> observable = mApiService.getAnswers(questionId, page, count)
+                .map(new PageWrapperFunc<>());
         return emitObservable(observable, subscriber);
     }
 }

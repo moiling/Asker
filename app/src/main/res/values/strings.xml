@@ -23,5 +23,6 @@
     <string name="send">Send</string>
     <string name="please_wait">请稍等</string>
     <string name="exit">EXIT</string>
+    <string name="title_activity_answer">AnswerActivity</string>
 
 </resources>

@@ -2,18 +2,18 @@ package com.moinut.asker.presenter;
 
 import android.content.Context;
 
+import com.moinut.asker.event.AskEvent;
 import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
 import com.moinut.asker.model.subscriber.SubscriberListener;
 import com.moinut.asker.ui.vu.IAskView;
 
-public class AskPresenter {
-    private IAskView v;
-    private Context context;
+import org.greenrobot.eventbus.EventBus;
+
+public class AskPresenter extends BasePresenter<IAskView> {
 
     public AskPresenter(Context context, IAskView v) {
-        this.v = v;
-        this.context = context;
+        super(context, v);
     }
 
     public void ask(String token, String title, String content, String type) {
@@ -22,6 +22,7 @@ public class AskPresenter {
             RequestManager.getInstance().askQuestion(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
                 @Override
                 public void onNext(String s) {
+                    EventBus.getDefault().post(new AskEvent());
                     if (v != null) v.onAskSuccess(s);
                 }
 
@@ -32,10 +33,5 @@ public class AskPresenter {
                 }
             }), token, title, content, type);
         }
-    }
-
-    public void onRelieveView() {
-        this.v = null;
-        this.context = null;
     }
 }

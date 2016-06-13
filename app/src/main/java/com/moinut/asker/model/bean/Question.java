@@ -2,6 +2,8 @@ package com.moinut.asker.model.bean;
 
 import com.moinut.asker.utils.TimeUtils;
 
+import java.io.Serializable;
+
 /*
  "id": 46,
  "contentId": 57,
@@ -16,7 +18,7 @@ import com.moinut.asker.utils.TimeUtils;
  "content": "这里是详细内容之类巴拉巴拉的"
  */
 
-public class Question {
+public class Question implements Serializable {
     private int id;
     private int contentId;
     private String title;

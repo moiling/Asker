@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_below="@id/app_bar"
+    android:id="@+id/content_answer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.moinut.asker.ui.activity.AnswerActivity"
+    tools:showIn="@layout/activity_answer"
+    android:background="@color/div">
+
+    <com.jude.easyrecyclerview.EasyRecyclerView
+        android:id="@+id/rv_answers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_empty="@layout/view_question_empty"
+        app:layout_progress="@layout/view_question_progress"/>
+
+
+</FrameLayout>

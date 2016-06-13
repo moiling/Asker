@@ -7,4 +7,5 @@
     <color name="questionType">#ffb74d</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
+    <color name="div">#eeeeee</color>
 </resources>

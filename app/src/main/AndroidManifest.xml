@@ -30,7 +30,11 @@
             android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".ui.activity.AskActivity" />
-        <activity android:name=".ui.activity.UserDetailActivity"></activity>
+        <activity android:name=".ui.activity.UserDetailActivity" />
+        <activity
+            android:name=".ui.activity.AnswerActivity"
+            android:label="@string/title_activity_answer"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -12,13 +12,10 @@ import com.moinut.asker.model.subscriber.SimpleSubscriber;
 import com.moinut.asker.model.subscriber.SubscriberListener;
 import com.moinut.asker.ui.vu.ILoginView;
 
-public class LoginPresenter {
-    private ILoginView v;
-    private Context context;
+public class LoginPresenter extends BasePresenter<ILoginView> {
 
     public LoginPresenter(Context context, ILoginView v) {
-        this.v = v;
-        this.context = context;
+        super(context, v);
     }
 
     public void login(String accountId, String password) {
@@ -51,8 +48,4 @@ public class LoginPresenter {
         }
     }
 
-    public void onRelieveView() {
-        this.v = null;
-        this.context = null;
-    }
 }

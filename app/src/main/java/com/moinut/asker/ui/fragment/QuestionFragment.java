@@ -1,5 +1,6 @@
 package com.moinut.asker.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -8,18 +9,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.moinut.asker.R;
+import com.moinut.asker.event.AskEvent;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.presenter.QuestionPresenter;
+import com.moinut.asker.ui.activity.AnswerActivity;
 import com.moinut.asker.ui.activity.MainActivity;
 import com.moinut.asker.ui.adapter.QuestionAdapter;
 import com.moinut.asker.ui.vu.IQuestionView;
 import com.moinut.asker.utils.AnimationUtils;
 import com.moinut.asker.utils.ScreenUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -70,25 +76,35 @@ public class QuestionFragment extends BaseFragment implements
         AnimationUtils.hideFabInRecyclerView(mRecyclerView.getRecyclerView(), ((MainActivity) getActivity()).getFab());
 
         mAdapter.setOnItemClickListener(position -> {
-            // TODO 显示详细
-            Toast.makeText(getContext(), mAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), AnswerActivity.class);
+            intent.putExtra("question", mAdapter.getItem(position));
+            startActivity(intent);
         });
         mAdapter.setMore(R.layout.view_question_more, this);
         mAdapter.setNoMore(R.layout.view_question_nomore);
         mAdapter.setError(R.layout.view_question_empty).setOnClickListener(v -> mAdapter.resumeMore());
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
         onRefresh();
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
         super.onDestroyView();
         ButterKnife.unbind(this);
         mQuestionPresenter.onRelieveView();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAskEvent(AskEvent event){
+        onRefresh();
     }
 
     @Override

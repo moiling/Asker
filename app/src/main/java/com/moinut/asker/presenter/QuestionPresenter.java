@@ -12,15 +12,12 @@ import java.util.List;
 
 import static com.moinut.asker.APP.getContext;
 
-public class QuestionPresenter {
-    private IQuestionView v;
-    private Context context;
+public class QuestionPresenter extends BasePresenter<IQuestionView> {
     private int page = 0;
     private int count = 10;
 
     public QuestionPresenter(Context context, IQuestionView v) {
-        this.v = v;
-        this.context = context;
+        super(context, v);
     }
 
     public void onRefresh() {
@@ -48,10 +45,5 @@ public class QuestionPresenter {
                 }
             }
         }), page, count);
-    }
-
-    public void onRelieveView() {
-        this.v = null;
-        this.context = null;
     }
 }

@@ -1,7 +1,5 @@
 package com.moinut.asker.utils;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -103,20 +101,19 @@ public class TimeUtils {
     public static String convertTimeToFormat(Date date, long timeStamp) {
         long curTime = new Date().getTime();
         long time = (curTime - timeStamp) / 1000;
-        Log.d(TAG, "convertTimeToFormat: -> curTime: " + curTime + " timeStamp: " + timeStamp);
         if (time < 60 && time >= 0) {
             return "刚刚";
         } else if (time >= 60 && time < 3600) {
             return time / 60 + "分钟前";
         } else if (time >= 3600 && time < 3600 * 24) {
             return time / 3600 + "小时前";
-        } /*else if (time >= 3600 * 24 && time < 3600 * 24 * 1) {
+        } else if (time >= 3600 * 24 && time < 3600 * 24 * 1) {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             return "今天 " + sdf.format(date);
         } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             return "昨天 " + sdf.format(date);
-        }*/ else {
+        } else {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             return sdf.format(date);
         }
