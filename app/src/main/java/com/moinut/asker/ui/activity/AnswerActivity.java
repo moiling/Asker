@@ -1,8 +1,8 @@
 package com.moinut.asker.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.moinut.asker.R;
+import com.moinut.asker.config.Const;
+import com.moinut.asker.event.AnswerEvent;
 import com.moinut.asker.model.bean.Answer;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.presenter.AnswerPresenter;
@@ -18,6 +20,10 @@ import com.moinut.asker.ui.adapter.AnswerAdapter;
 import com.moinut.asker.ui.vu.IAnswerView;
 import com.moinut.asker.utils.AnimationUtils;
 import com.moinut.asker.utils.ScreenUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -48,7 +54,7 @@ public class AnswerActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
         ButterKnife.bind(this);
-        mQuestion = (Question) getIntent().getSerializableExtra("question");
+        mQuestion = (Question) getIntent().getSerializableExtra(Const.INTENT_QUESTION);
         mAnswerPresenter = new AnswerPresenter(this, this, mQuestion.getId());
         initView();
 
@@ -56,16 +62,27 @@ public class AnswerActivity extends BaseActivity implements
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
-        mAnswerPresenter.onRelieveView();
+        if (mAnswerPresenter != null) mAnswerPresenter.onRelieveView();
     }
 
     private void initView() {
         initToolbar();
         initRecycler();
-        mFab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        mFab.setOnClickListener(view -> {
+            Intent intent = new Intent(this, DoAnswerActivity.class);
+            intent.putExtra(Const.INTENT_QUESTION, mQuestion.getId());
+            startActivity(intent);
+        });
     }
 
     private void initRecycler() {
@@ -88,6 +105,11 @@ public class AnswerActivity extends BaseActivity implements
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAnswerEvent(AnswerEvent event){
+        onRefresh();
     }
 
     @Override

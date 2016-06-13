@@ -68,18 +68,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void initUser() {
-        // TODO 测试登录
-        /*APP.setUser(this, new Gson().fromJson("{"+
-                "    \"id\": 5,\n" +
-                "    \"type\": \"student\",\n" +
-                "    \"nickName\": \"MOILING\",\n" +
-                "    \"date\": \"2016-06-01 17:47:21\",\n" +
-                "    \"sex\": \"male\",\n" +
-                "    \"tel\": \"110\",\n" +
-                "    \"email\": \"super8moi@gmail.com\",\n" +
-                "    \"token\": \"0464816bc2cd03bc5e9d9b546fe0b6f71a91225b\""+
-                "}", User.class));*/
-
         if ((mUser = APP.getUser(this)) == null) {
             mUserName.setText("点击登录");
             mUserName.setOnClickListener(new ToLogin());
@@ -166,17 +154,17 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_question) {
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_stars) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_me) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_search) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_ask) {
 
         }
 

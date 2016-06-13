@@ -34,7 +34,8 @@
         <activity
             android:name=".ui.activity.AnswerActivity"
             android:label="@string/title_activity_answer"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.activity.DoAnswerActivity"></activity>
     </application>
 
 </manifest>

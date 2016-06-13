@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.moinut.asker.R;
+import com.moinut.asker.config.Const;
+import com.moinut.asker.event.AnswerEvent;
 import com.moinut.asker.event.AskEvent;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.presenter.QuestionPresenter;
@@ -77,7 +79,7 @@ public class QuestionFragment extends BaseFragment implements
 
         mAdapter.setOnItemClickListener(position -> {
             Intent intent = new Intent(getContext(), AnswerActivity.class);
-            intent.putExtra("question", mAdapter.getItem(position));
+            intent.putExtra(Const.INTENT_QUESTION, mAdapter.getItem(position));
             startActivity(intent);
         });
         mAdapter.setMore(R.layout.view_question_more, this);
@@ -104,6 +106,11 @@ public class QuestionFragment extends BaseFragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAskEvent(AskEvent event){
+        onRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAnswerEvent(AnswerEvent event){
         onRefresh();
     }
 

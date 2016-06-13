@@ -9,38 +9,35 @@ import android.widget.Toast;
 
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
-import com.moinut.asker.presenter.AskPresenter;
-import com.moinut.asker.ui.vu.IAskView;
+import com.moinut.asker.config.Const;
+import com.moinut.asker.presenter.DoAnswerPresenter;
+import com.moinut.asker.ui.vu.IDoAnswerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-@SuppressWarnings("WeakerAccess")
-public class AskActivity extends BaseActivity implements IAskView {
+public class DoAnswerActivity extends BaseActivity implements IDoAnswerView {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.edit_title)
-    EditText mEditTitle;
-    @Bind(R.id.edit_type)
-    EditText mEditType;
     @Bind(R.id.edit_content)
     EditText mEditContent;
-    private AskPresenter mAskPresenter;
+
+    private DoAnswerPresenter mDoAnswerPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ask);
+        setContentView(R.layout.activity_do_answer);
         ButterKnife.bind(this);
-        mAskPresenter = new AskPresenter(this, this);
+        initData();
         initView();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAskPresenter.onRelieveView();
+        if (mDoAnswerPresenter != null) mDoAnswerPresenter.onRelieveView();
     }
 
     private void initView() {
@@ -50,14 +47,25 @@ public class AskActivity extends BaseActivity implements IAskView {
     }
 
     private void initToolbar() {
+        mToolbar.setTitle("Answer");
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
     }
 
+    private void initData() {
+        int questionId = getIntent().getIntExtra(Const.INTENT_QUESTION, -1);
+        String token;
+        if (APP.getUser(this) != null && (token = APP.getUser(this).getToken())!= null) {
+            mDoAnswerPresenter = new DoAnswerPresenter(this, this, token, questionId);
+        } else {
+            finish();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_ask, menu);
+        getMenuInflater().inflate(R.menu.menu_answer, menu);
         return true;
     }
 
@@ -73,39 +81,28 @@ public class AskActivity extends BaseActivity implements IAskView {
     }
 
     private void send() {
-        if (APP.getUser(this) == null || APP.getUser(this).getToken().isEmpty()) {
-            Toast.makeText(this, "用户未登录, 请登录了再来 (咦?你不登录怎么进来的……", Toast.LENGTH_SHORT).show();
+        if (mEditContent.getText().toString().isEmpty()) {
+            mEditContent.setError("内容不能为空");
             return;
         }
-        if (mEditTitle.getText().toString().isEmpty()) {
-            mEditTitle.setError("标题不能为空");
-            return;
-        }
-        if (mEditType.getText().toString().isEmpty()) {
-            mEditType.setError("类型不能为空");
-            return;
-        }
-        mAskPresenter.ask(APP.getUser(this).getToken(),
-                mEditTitle.getText().toString(),
-                mEditContent.getText().toString(),
-                mEditType.getText().toString());
+        mDoAnswerPresenter.answer(mEditContent.getText().toString());
     }
 
     @Override
-    public void onAskSuccess(String info) {
+    public void onDoAnswerSuccess(String info) {
         dismissProgress();
-        Toast.makeText(this, "提问成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "回复成功", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
-    public void onAskError(String info) {
+    public void onDoAnswerError(String info) {
         dismissProgress();
         showDialog("ERROR", info);
     }
 
     @Override
-    public void onProgress() {
-        showProgress("发表中");
+    public void onDoAnswerProgress() {
+        showProgress("回复中");
     }
 }

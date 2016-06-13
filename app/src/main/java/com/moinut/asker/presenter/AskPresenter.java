@@ -10,6 +10,8 @@ import com.moinut.asker.ui.vu.IAskView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import retrofit2.adapter.rxjava.HttpException;
+
 public class AskPresenter extends BasePresenter<IAskView> {
 
     public AskPresenter(Context context, IAskView v) {
@@ -29,7 +31,17 @@ public class AskPresenter extends BasePresenter<IAskView> {
                 @Override
                 public void onError(Throwable e) {
                     e.printStackTrace();
-                    if (v != null) v.onAskError(e.toString());
+                    if (v != null) {
+                        if (e instanceof HttpException) {
+                            if (((HttpException) e).code() == 401) {
+                                v.onAskError("本地储存账号信息过期\n请重新登录!");
+                            } else {
+                                v.onAskError(((HttpException) e).message());
+                            }
+                        } else {
+                            v.onAskError(e.toString());
+                        }
+                    }
                 }
             }), token, title, content, type);
         }

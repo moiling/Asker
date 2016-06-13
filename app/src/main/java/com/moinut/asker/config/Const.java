@@ -9,4 +9,6 @@ public class Const {
     public static final String API_TEACHER = "teacher";
     public static final String API_MALE = "male";
     public static final String API_FEMALE = "female";
+
+    public static final String INTENT_QUESTION = "question";
 }
