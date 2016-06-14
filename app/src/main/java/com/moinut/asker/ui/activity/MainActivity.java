@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.model.bean.User;
+import com.moinut.asker.ui.fragment.MeFragment;
 import com.moinut.asker.ui.fragment.QuestionFragment;
 import com.moinut.asker.utils.FragUtils;
 
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity
 
     private User mUser;
     private QuestionFragment mQuestionFragment;
+    private MeFragment mMeFragment;
     private Fragment mCurrentFragment;
 
     @Override
@@ -51,14 +53,15 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initFrag();
         initView();
+    }
 
-        FragmentManager manager = getSupportFragmentManager();
-        if (mQuestionFragment == null) {
-            FragUtils.addFragmentToActivity(manager, mCurrentFragment = mQuestionFragment = new QuestionFragment(), R.id.content_main);
-        } else {
-            FragUtils.startAnotherFragment(manager, mCurrentFragment, mQuestionFragment, R.id.content_main);
-        }
+    private void initFrag() {
+        mQuestionFragment = new QuestionFragment();
+        mMeFragment = new MeFragment();
+
+        FragUtils.addFragmentToActivity(getSupportFragmentManager(), mCurrentFragment = mQuestionFragment, R.id.content_main);
     }
 
     @Override
@@ -142,24 +145,22 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        FragmentManager manager = getSupportFragmentManager();
         if (id == R.id.nav_question) {
-
+            if (mCurrentFragment != mQuestionFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mQuestionFragment, R.id.content_main);
         } else if (id == R.id.nav_stars) {
 
         } else if (id == R.id.nav_me) {
-
+            if (mCurrentFragment != mMeFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mMeFragment, R.id.content_main);
         } else if (id == R.id.nav_search) {
 
         } else if (id == R.id.nav_settings) {

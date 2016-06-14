@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
+    android:clickable="true"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingBottom="12dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="12dp">
+
+        <LinearLayout
+            android:id="@+id/ll_title"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_type"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_question_type"
+                tools:text="生活" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textSize="18sp"
+                android:maxLines="1"
+                android:textColor="@color/primary_text"
+                tools:text="这是一个标题" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_below="@id/ll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/secondary_text"
+            tools:text="刚刚"/>
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_toRightOf="@id/tv_date"
+            android:layout_alignBottom="@id/tv_date"
+            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_text"
+            tools:text="MOILING" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_author"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:ellipsize="end"
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/primary_text"
+            tools:text="这是问题的详细内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容" />
+
+        <LinearLayout
+            android:id="@+id/ll_star_count"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="8dp"
+            android:padding="4dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_content"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_star_count"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_favorite_border"/>
+            <TextView
+                android:id="@+id/tv_star_count"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="0"
+                tools:text="10"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_answer_count"
+            android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@id/ll_star_count"
+            android:padding="4dp"
+            android:layout_below="@id/tv_content"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_chat_bubble_outline"/>
+            <TextView
+                android:id="@+id/tv_answer_count"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="0"
+                tools:text="10"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+

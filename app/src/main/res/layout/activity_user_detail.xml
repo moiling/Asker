@@ -23,13 +23,42 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <Button
-        android:id="@+id/btn_exit"
-        style="?android:textAppearanceSmall"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/exit"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+
+            <include layout="@layout/layout_user_info"/>
+
+            <android.support.v7.widget.ViewStubCompat
+                android:id="@+id/view_stub_student_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/layout_student_info"/>
+
+            <android.support.v7.widget.ViewStubCompat
+                android:id="@+id/view_stub_teacher_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/layout_teacher_info"/>
+
+            <Button
+                android:id="@+id/btn_exit"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/exit"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </com.jude.fitsystemwindowlayout.FitSystemWindowsLinearLayout>

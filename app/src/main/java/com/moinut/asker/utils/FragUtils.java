@@ -32,7 +32,11 @@ public class FragUtils {
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.add(frameId, toFragment, toFragment.getClass().getName());
+        if (!toFragment.isAdded()) {
+            transaction.add(frameId, toFragment, toFragment.getClass().getName());
+        } else {
+            transaction.show(toFragment);
+        }
         transaction.hide(fromFragment);
         transaction.commit();
     }

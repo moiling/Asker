@@ -1,8 +1,12 @@
 package com.moinut.asker.ui.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.ViewStubCompat;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.moinut.asker.APP;
@@ -24,6 +28,31 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     Toolbar mToolbar;
     @Bind(R.id.btn_exit)
     Button mBtnExit;
+    @Bind(R.id.edit_name)
+    EditText mEditName;
+    @Bind(R.id.rb_sex_male)
+    AppCompatRadioButton mRbSexMale;
+    @Bind(R.id.rb_sex_female)
+    AppCompatRadioButton mRbSexFemale;
+    @Bind(R.id.rg_sex)
+    RadioGroup mRgSex;
+    @Bind(R.id.edit_tel)
+    EditText mEditTel;
+    @Bind(R.id.edit_email)
+    EditText mEditEmail;
+    @Bind(R.id.view_stub_student_info)
+    ViewStubCompat mStudentViewStub;
+    @Bind(R.id.view_stub_teacher_info)
+    ViewStubCompat mTeacherViewStub;
+
+    // Student
+    private EditText mEditYear;
+    private EditText mEditMajor;
+    // Teacher
+    private EditText mEditRealName;
+    // Comment
+    private EditText mEditCollege;
+    private EditText mEditAcademy;
 
     private String token;
     private UserInfoPresenter mUserInfoPresenter;
@@ -61,6 +90,16 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             APP.exitUser(this);
             finish();
         });
+        if (mUserInfoPresenter.getUserType().equals(Const.API_STUDENT)) {
+            mStudentViewStub.inflate();
+            mEditYear = (EditText) findViewById(R.id.edit_year);
+            mEditMajor = (EditText) findViewById(R.id.edit_major);
+        } else {
+            mTeacherViewStub.inflate();
+            mEditRealName = (EditText) findViewById(R.id.edit_real_name);
+        }
+        mEditCollege = (EditText) findViewById(R.id.edit_college);
+        mEditAcademy = (EditText) findViewById(R.id.edit_academy);
     }
 
     private void initToolbar() {
@@ -71,42 +110,69 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     }
 
     private void showStudent(Student student) {
-        Toast.makeText(this, student.toString(), Toast.LENGTH_SHORT).show();
+        mEditName.setText(student.getUser().getNickName());
+        mEditAcademy.setText(student.getAcademy());
+        mEditCollege.setText(student.getCollege());
+        mEditEmail.setText(student.getUser().getEmail());
+        mEditTel.setText(student.getUser().getTel());
+        mEditMajor.setText(student.getMajor());
+        mEditYear.setText(student.getYear() + "");
+        if (student.getUser().getSex().equals(Const.API_FEMALE)) {
+            mRbSexFemale.setChecked(true);
+        } else {
+            mRbSexMale.setChecked(true);
+        }
     }
 
     private void showTeacher(Teacher teacher) {
-        Toast.makeText(this, teacher.toString(), Toast.LENGTH_SHORT).show();
+        mEditName.setText(teacher.getUser().getNickName());
+        mEditAcademy.setText(teacher.getAcademy());
+        mEditCollege.setText(teacher.getCollege());
+        mEditEmail.setText(teacher.getUser().getEmail());
+        mEditTel.setText(teacher.getUser().getTel());
+        mEditRealName.setText(teacher.getRealName());
+        if (teacher.getUser().getSex().equals(Const.API_FEMALE)) {
+            mRbSexFemale.setChecked(true);
+        } else {
+            mRbSexMale.setChecked(true);
+        }
     }
 
     @Override
     public void onGetSuccess(Object o) {
+        dismissProgress();
         if (mUserInfoPresenter.getUserType().equals(Const.API_STUDENT)) showStudent((Student) o);
-        else if (mUserInfoPresenter.getUserType().equals(Const.API_TEACHER)) showTeacher((Teacher) o);
+        else if (mUserInfoPresenter.getUserType().equals(Const.API_TEACHER))
+            showTeacher((Teacher) o);
     }
 
     @Override
     public void onGetError(String info) {
+        dismissProgress();
         showDialog("ERROR", info);
+    }
+
+
+    @Override
+    public void onGetProgress() {
+        showProgress("获取信息中");
     }
 
     @Override
     public void onUpdateSuccess(String info) {
-
+        dismissProgress();
+        showDialog("SUCCESS", info);
     }
 
     @Override
     public void onUpdateError(String info) {
-
-    }
-
-    @Override
-    public void onGetProgress() {
-
+        dismissProgress();
+        showDialog("ERROR", info);
     }
 
     @Override
     public void onUpdateProgress() {
-
+        showProgress("更新信息中");
     }
 
 }

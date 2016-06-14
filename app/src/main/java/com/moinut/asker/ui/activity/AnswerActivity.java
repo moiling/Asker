@@ -7,6 +7,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
@@ -98,6 +103,32 @@ public class AnswerActivity extends BaseActivity implements
         mAdapter.setMore(R.layout.view_question_more, this);
         mAdapter.setNoMore(R.layout.view_question_nomore);
         mAdapter.setError(R.layout.view_question_empty).setOnClickListener(v -> mAdapter.resumeMore());
+        mAdapter.addHeader(new RecyclerArrayAdapter.ItemView() {
+            @Override
+            public View onCreateView(ViewGroup parent) {
+                return LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_question, parent, false);
+            }
+
+            @Override
+            public void onBindView(View headerView) {
+                ((TextView)headerView.findViewById(R.id.tv_title)).setText(mQuestion.getTitle());
+                ((TextView)headerView.findViewById(R.id.tv_content)).setText(mQuestion.getContent());
+                String name = mQuestion.getAuthorName();
+                if (name == null) {
+                    ((TextView)headerView.findViewById(R.id.tv_author)).setText("一位没有名字的用户");
+                } else {
+                    ((TextView)headerView.findViewById(R.id.tv_author)).setText(name);
+                }
+                ((TextView)headerView.findViewById(R.id.tv_date)).setText(mQuestion.getDateFormat());
+                ((TextView)headerView.findViewById(R.id.tv_type)).setText(mQuestion.getType());
+                ((TextView)headerView.findViewById(R.id.tv_answer_count)).setText(mQuestion.getAnswerCount() + "");
+                ((TextView)headerView.findViewById(R.id.tv_star_count)).setText(mQuestion.getStarCount() + "");
+                headerView.findViewById(R.id.ll_star_count).setOnClickListener(v -> {
+                    //aa
+                    Toast.makeText(v.getContext(), "收藏", Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
     }
 
     private void initToolbar() {
