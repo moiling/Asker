@@ -8,6 +8,7 @@ package com.moinut.asker.model.bean;
 "likeNumber": 0,
 "dislikeNumber": 0,
 "authorName": "Teacher",
+"authorType": "teacher",
 "content": "我不管，你自己好好完成！"
 */
 
@@ -21,7 +22,16 @@ public class Answer {
     private int likeNumber;
     private int dislikeNumber;
     private String authorName;
+    private String authorType;
     private String content;
+
+    public String getAuthorType() {
+        return authorType;
+    }
+
+    public void setAuthorType(String authorType) {
+        this.authorType = authorType;
+    }
 
     public String getAuthorName() {
         return authorName;

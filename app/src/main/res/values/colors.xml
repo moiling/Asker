@@ -8,4 +8,7 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
     <color name="div">#eeeeee</color>
+    <color name="studentType">#42a5f5</color>
+    <color name="teacherType">#ef5350</color>
+    <color name="unKnowType">#757575</color>
 </resources>

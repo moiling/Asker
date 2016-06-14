@@ -110,14 +110,14 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     }
 
     private void showStudent(Student student) {
-        mEditName.setText(student.getUser().getNickName());
+        mEditName.setText(student.getNickName());
         mEditAcademy.setText(student.getAcademy());
         mEditCollege.setText(student.getCollege());
-        mEditEmail.setText(student.getUser().getEmail());
-        mEditTel.setText(student.getUser().getTel());
+        mEditEmail.setText(student.getEmail());
+        mEditTel.setText(student.getTel());
         mEditMajor.setText(student.getMajor());
         mEditYear.setText(student.getYear() + "");
-        if (student.getUser().getSex().equals(Const.API_FEMALE)) {
+        if (student.getSex().equals(Const.API_FEMALE)) {
             mRbSexFemale.setChecked(true);
         } else {
             mRbSexMale.setChecked(true);
@@ -125,13 +125,13 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     }
 
     private void showTeacher(Teacher teacher) {
-        mEditName.setText(teacher.getUser().getNickName());
+        mEditName.setText(teacher.getNickName());
         mEditAcademy.setText(teacher.getAcademy());
         mEditCollege.setText(teacher.getCollege());
-        mEditEmail.setText(teacher.getUser().getEmail());
-        mEditTel.setText(teacher.getUser().getTel());
+        mEditEmail.setText(teacher.getEmail());
+        mEditTel.setText(teacher.getTel());
         mEditRealName.setText(teacher.getRealName());
-        if (teacher.getUser().getSex().equals(Const.API_FEMALE)) {
+        if (teacher.getSex().equals(Const.API_FEMALE)) {
             mRbSexFemale.setChecked(true);
         } else {
             mRbSexMale.setChecked(true);
@@ -139,11 +139,10 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     }
 
     @Override
-    public void onGetSuccess(Object o) {
+    public void onGetSuccess(User user) {
         dismissProgress();
-        if (mUserInfoPresenter.getUserType().equals(Const.API_STUDENT)) showStudent((Student) o);
-        else if (mUserInfoPresenter.getUserType().equals(Const.API_TEACHER))
-            showTeacher((Teacher) o);
+        if (user instanceof Student) showStudent((Student) user);
+        else if (user instanceof Teacher) showTeacher((Teacher) user);
     }
 
     @Override

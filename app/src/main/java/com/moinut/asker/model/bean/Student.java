@@ -1,19 +1,11 @@
 package com.moinut.asker.model.bean;
-/*
-    "id": 3,
-    "college": "CQUPT",
-    "academy": "SW",
-    "year": 2014,
-    "major": "SW",
-    "user": {
- */
-public class Student {
-    private int id;
+
+public class Student extends User {
+    private int studentId;
     private String college;
     private String academy;
     private int year;
     private String major;
-    private User user;
 
     public String getAcademy() {
         return academy;
@@ -31,12 +23,12 @@ public class Student {
         this.college = college;
     }
 
-    public int getId() {
-        return id;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
     public String getMajor() {
@@ -45,14 +37,6 @@ public class Student {
 
     public void setMajor(String major) {
         this.major = major;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public int getYear() {
@@ -67,11 +51,10 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "academy='" + academy + '\'' +
-                ", id=" + id +
+                ", studentId=" + studentId +
                 ", college='" + college + '\'' +
                 ", year=" + year +
                 ", major='" + major + '\'' +
-                ", user=" + user +
-                '}';
+                "} " + super.toString();
     }
 }

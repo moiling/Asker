@@ -15,8 +15,6 @@
         android:id="@+id/rv_answers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_empty="@layout/view_question_empty"
         app:layout_progress="@layout/view_question_progress"/>
-
 
 </FrameLayout>
