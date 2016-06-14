@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .content(this.getResources().getString(R.string.please_wait))
                 .theme(Theme.LIGHT)
                 .progress(true, 100)
-                .cancelable(false)
+                .cancelable(true)
                 .show();
     }
 

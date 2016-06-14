@@ -4,20 +4,6 @@ import com.moinut.asker.utils.TimeUtils;
 
 import java.io.Serializable;
 
-/*
- "id": 46,
- "contentId": 57,
- "title": "这里是标题",
- "date": "2016-06-01 23:13:21",
- "recent": "2016-06-01 23:13:21",
- "type": "测试",
- "answerCount": 0,
- "bestAnswerId": 0,
- "starCount": 0,
- "authorName": "MOILING",
- "content": "这里是详细内容之类巴拉巴拉的"
- */
-
 public class Question implements Serializable {
     private int id;
     private int contentId;
@@ -30,6 +16,15 @@ public class Question implements Serializable {
     private int starCount;
     private String authorName;
     private String content;
+    private boolean stared;
+
+    public boolean isStared() {
+        return stared;
+    }
+
+    public void setStared(boolean stared) {
+        this.stared = stared;
+    }
 
     public int getAnswerCount() {
         return answerCount;

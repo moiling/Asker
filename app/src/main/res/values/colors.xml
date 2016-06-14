@@ -9,8 +9,9 @@
     <color name="secondary_text">#727272</color>
     <color name="div">#eeeeee</color>
     <color name="studentType">#42a5f5</color>
-    <color name="teacherType">#ef5350</color>
+    <color name="teacherType">#ff7043</color>
     <color name="unKnowType">#757575</color>
     <color name="logoutButtonNormal">#e57373</color>
     <color name="logoutButtonPress">#ef5350</color>
+    <color name="iconGrey">#9f9f9f</color>
 </resources>

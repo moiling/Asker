@@ -1,13 +1,23 @@
 package com.moinut.asker.ui.viewholder;
 
+import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
+import com.moinut.asker.APP;
 import com.moinut.asker.R;
+import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.Question;
+import com.moinut.asker.model.bean.StarInfo;
+import com.moinut.asker.model.network.RequestManager;
+import com.moinut.asker.model.subscriber.SimpleSubscriber;
+import com.moinut.asker.model.subscriber.SubscriberListener;
+
+import retrofit2.adapter.rxjava.HttpException;
 
 public class QuestionViewHolder extends BaseViewHolder<Question> {
 
@@ -19,6 +29,7 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
     private TextView answerCount;
     private TextView starCount;
     private LinearLayout star;
+    private ImageView starImage;
 
     public QuestionViewHolder(View itemView) {
         super(itemView);
@@ -30,6 +41,7 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
         answerCount = $(R.id.tv_answer_count);
         starCount = $(R.id.tv_star_count);
         star = $(R.id.ll_star_count);
+        starImage = $(R.id.iv_star_count);
     }
 
     @Override
@@ -47,8 +59,31 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
         answerCount.setText(data.getAnswerCount() + "");
         starCount.setText(data.getStarCount() + "");
         star.setOnClickListener(v -> {
-            //aa
-            Toast.makeText(v.getContext(), "收藏", Toast.LENGTH_SHORT).show();
+            if (APP.getUser(getContext()) != null) {
+                RequestManager.getInstance().starQuestion(new SimpleSubscriber<>(getContext(), new SubscriberListener<StarInfo>() {
+                    @Override
+                    public void onNext(StarInfo starInfo) {
+                        starImage.setColorFilter(starInfo.getType().equals(Const.API_STAR) ? ContextCompat.getColor(getContext(), R.color.colorAccent)
+                                : ContextCompat.getColor(getContext(), R.color.iconGrey));
+                        starCount.setText(starInfo.getCount() + "");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        if (e instanceof HttpException) {
+                            if (((HttpException) e).code() == 401) {
+                                Toast.makeText(getContext(), "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        // 其他不想处理……
+                    }
+                }), APP.getUser(getContext()).getToken(), data.getId());
+            } else {
+                Toast.makeText(getContext(), "请登录", Toast.LENGTH_SHORT).show();
+            }
         });
+        starImage.setColorFilter(data.isStared() ? ContextCompat.getColor(getContext(), R.color.colorAccent)
+                                                 : ContextCompat.getColor(getContext(), R.color.iconGrey));
     }
 }

@@ -16,9 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
+import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.ui.fragment.MeFragment;
 import com.moinut.asker.ui.fragment.QuestionFragment;
@@ -91,7 +93,11 @@ public class MainActivity extends BaseActivity
 
         mFab.setOnClickListener(view -> {
             if (APP.getUser(this) != null) {
-                startActivity(new Intent(MainActivity.this, AskActivity.class));
+                if (APP.getUser(this).getType().equals(Const.API_STUDENT)) {
+                    startActivity(new Intent(MainActivity.this, AskActivity.class));
+                } else {
+                    Toast.makeText(this, "只有学生才可以发布问题哟", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }

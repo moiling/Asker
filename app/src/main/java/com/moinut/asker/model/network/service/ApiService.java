@@ -5,6 +5,7 @@ import com.moinut.asker.model.bean.Answer;
 import com.moinut.asker.model.bean.ApiWrapper;
 import com.moinut.asker.model.bean.PageWrapper;
 import com.moinut.asker.model.bean.Question;
+import com.moinut.asker.model.bean.StarInfo;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
 import com.moinut.asker.model.bean.User;
@@ -26,7 +27,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(Api.API_GET_ALL_QUESTIONS)
     Observable<PageWrapper<List<Question>>> getAllQuestions(@Field("page") int page,
-                                                            @Field("count") int count);
+                                                            @Field("count") int count,
+                                                            @Field("token") String token);
 
     @FormUrlEncoded
     @POST(Api.API_ASK_QUESTION)
@@ -74,6 +76,11 @@ public interface ApiService {
     @FormUrlEncoded
     @POST(Api.API_GET_ANSWERS)
     Observable<PageWrapper<List<Answer>>> getAnswers(@Field("questionId") int questionId,
-                                              @Field("page") int page,
-                                              @Field("count") int count);
+                                                     @Field("page") int page,
+                                                     @Field("count") int count);
+
+    @FormUrlEncoded
+    @POST(Api.API_STAR_QUESTION)
+    Observable<ApiWrapper<StarInfo>> starQuestion(@Field("token") String token,
+                                                  @Field("questionId") int questionId);
 }

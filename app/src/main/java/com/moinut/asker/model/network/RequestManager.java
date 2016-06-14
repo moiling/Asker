@@ -9,6 +9,7 @@ import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.Answer;
 import com.moinut.asker.model.bean.ApiWrapper;
 import com.moinut.asker.model.bean.Question;
+import com.moinut.asker.model.bean.StarInfo;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
 import com.moinut.asker.model.bean.UploadWrapper;
@@ -120,8 +121,8 @@ public enum RequestManager {
         return emitObservable(observable, subscriber);
     }
 
-    public Subscription getAllQuestions(Subscriber<List<Question>> subscriber, int page, int count) {
-        Observable<List<Question>> observable = mApiService.getAllQuestions(page, count)
+    public Subscription getAllQuestions(Subscriber<List<Question>> subscriber, int page, int count, String token) {
+        Observable<List<Question>> observable = mApiService.getAllQuestions(page, count, token)
                 .map(new PageWrapperFunc<>());
         return emitObservable(observable, subscriber);
     }
@@ -172,6 +173,12 @@ public enum RequestManager {
     public Subscription getAnswers(Subscriber<List<Answer>> subscriber, int questionId, int page, int count) {
         Observable<List<Answer>> observable = mApiService.getAnswers(questionId, page, count)
                 .map(new PageWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription starQuestion(Subscriber<StarInfo> subscriber, String token, int questionId) {
+        Observable<StarInfo> observable = mApiService.starQuestion(token, questionId)
+                .map(new ApiWrapperFunc<>());
         return emitObservable(observable, subscriber);
     }
 }

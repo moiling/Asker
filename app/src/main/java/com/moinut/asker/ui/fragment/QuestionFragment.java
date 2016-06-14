@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.event.AnswerEvent;
 import com.moinut.asker.event.AskEvent;
+import com.moinut.asker.event.LoginEvent;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.presenter.QuestionPresenter;
 import com.moinut.asker.ui.activity.AnswerActivity;
@@ -105,6 +107,11 @@ public class QuestionFragment extends BaseFragment implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(LoginEvent event){
+        onRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAskEvent(AskEvent event){
         onRefresh();
     }
@@ -116,12 +123,18 @@ public class QuestionFragment extends BaseFragment implements
 
     @Override
     public void onRefresh() {
-        mQuestionPresenter.onRefresh();
+        if (APP.getUser(getContext()) == null)
+            mQuestionPresenter.onRefresh(null);
+        else
+            mQuestionPresenter.onRefresh(APP.getUser(getContext()).getToken());
     }
 
     @Override
     public void onLoadMore() {
-        mQuestionPresenter.onLoadMore();
+        if (APP.getUser(getContext()) == null)
+            mQuestionPresenter.onLoadMore(null);
+        else
+            mQuestionPresenter.onLoadMore(APP.getUser(getContext()).getToken());
     }
 
     @Override

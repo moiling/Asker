@@ -5,12 +5,15 @@ import android.content.Context;
 import com.moinut.asker.APP;
 import com.moinut.asker.config.Api;
 import com.moinut.asker.config.Const;
+import com.moinut.asker.event.LoginEvent;
 import com.moinut.asker.model.bean.ApiWrapper;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
 import com.moinut.asker.model.subscriber.SubscriberListener;
 import com.moinut.asker.ui.vu.ILoginView;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class LoginPresenter extends BasePresenter<ILoginView> {
 
@@ -35,6 +38,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                         } else {
                             User user = userApiWrapper.getData();
                             APP.setUser(context, user);
+                            EventBus.getDefault().post(LoginEvent.class);
                             v.onLoginSuccess(user);
                         }
                     }

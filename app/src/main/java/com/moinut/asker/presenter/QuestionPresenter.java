@@ -1,14 +1,19 @@
 package com.moinut.asker.presenter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
 import com.moinut.asker.model.subscriber.SubscriberListener;
+import com.moinut.asker.ui.activity.LoginActivity;
 import com.moinut.asker.ui.vu.IQuestionView;
 
 import java.util.List;
+
+import retrofit2.adapter.rxjava.HttpException;
 
 import static com.moinut.asker.APP.getContext;
 
@@ -20,7 +25,7 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
         super(context, v);
     }
 
-    public void onRefresh() {
+    public void onRefresh(String token) {
         page = 0;
         RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
             @Override
@@ -31,10 +36,21 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
                     page++;
                 }
             }
-        }), page, count);
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if (e instanceof HttpException) {
+                    if (((HttpException) e).code() == 401) {
+                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                }
+                // 其他错误不处理
+            }
+        }), page, count, token);
     }
 
-    public void onLoadMore() {
+    public void onLoadMore(String token) {
         RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
             @Override
             public void onNext(List<Question> questions) {
@@ -44,6 +60,17 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
                     page++;
                 }
             }
-        }), page, count);
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if (e instanceof HttpException) {
+                    if (((HttpException) e).code() == 401) {
+                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                }
+                // 其他错误不处理
+            }
+        }), page, count, token);
     }
 }
