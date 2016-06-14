@@ -1,7 +1,9 @@
 package com.moinut.asker.presenter;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import com.moinut.asker.APP;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
@@ -21,6 +23,80 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
     public UserInfoPresenter(Context context, IUserInfoView iUserInfoView, String userType) {
         super(context, iUserInfoView);
         this.userType = userType;
+    }
+
+    public void updateStudent(String token, Student student) {
+        Student old = (Student) user;
+        if (old != null) {
+            if (student.equals(old)) {
+                Toast.makeText(context, "没有任何修改呀", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        if (v != null) {
+            v.onUpdateProgress();
+            RequestManager.getInstance().updateStudentInfo(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
+                @Override
+                public void onError(Throwable e) {
+                    if (v != null) {
+                        if (e instanceof HttpException) {
+                            if (((HttpException) e).code() == 401) {
+                                v.onUpdateError("本地储存账号信息过期\n请重新登录!");
+                            } else {
+                                v.onUpdateError(((HttpException) e).message());
+                            }
+                        } else {
+                            v.onUpdateError(e.toString());
+                        }
+                    }
+                }
+
+                @Override
+                public void onNext(String s) {
+                    if (v != null) v.onUpdateSuccess(s);
+                    APP.setUser(context, student);
+                }
+            }), token, student.getNickName(), student.getSex(), student.getTel(), student.getEmail(),
+                    student.getCollege(), student.getAcademy(), student.getYear(), student.getMajor());
+
+        }
+    }
+
+    public void updateTeacher(String token, Teacher teacher) {
+        Teacher old = (Teacher) user;
+        if (old != null) {
+            if (teacher.equals(old)) {
+                Toast.makeText(context, "没有任何修改呀", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        if (v != null) {
+            v.onUpdateProgress();
+            RequestManager.getInstance().updateTeacherInfo(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
+                        @Override
+                        public void onError(Throwable e) {
+                            if (v != null) {
+                                if (e instanceof HttpException) {
+                                    if (((HttpException) e).code() == 401) {
+                                        v.onUpdateError("本地储存账号信息过期\n请重新登录!");
+                                    } else {
+                                        v.onUpdateError(((HttpException) e).message());
+                                    }
+                                } else {
+                                    v.onUpdateError(e.toString());
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onNext(String s) {
+                            if (v != null) v.onUpdateSuccess(s);
+                            APP.setUser(context, teacher);
+                        }
+                    }), token, teacher.getNickName(), teacher.getSex(), teacher.getTel(), teacher.getEmail(),
+                    teacher.getCollege(), teacher.getAcademy(), teacher.getRealName());
+
+        }
     }
 
     public void get(String token) {
@@ -82,5 +158,9 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
 
     public String getUserType() {
         return userType;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

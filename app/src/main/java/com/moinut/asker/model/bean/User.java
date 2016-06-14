@@ -13,7 +13,7 @@ package com.moinut.asker.model.bean;
 
 import com.moinut.asker.utils.TimeUtils;
 
-public class User {
+public class User implements Cloneable {
     private int id;
     private String type;
     private String nickName;
@@ -22,6 +22,14 @@ public class User {
     private String tel;
     private String email;
     private String token;
+
+    public User() {
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     public String getDate() {
         return date;
@@ -107,5 +115,42 @@ public class User {
                 ", email='" + email + '\'' +
                 ", token='" + token + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (getId() != user.getId()) return false;
+        if (getType() != null ? !getType().equals(user.getType()) : user.getType() != null)
+            return false;
+        if (getNickName() != null ? !getNickName().equals(user.getNickName()) : user.getNickName() != null)
+            return false;
+        if (getDate() != null ? !getDate().equals(user.getDate()) : user.getDate() != null)
+            return false;
+        if (getSex() != null ? !getSex().equals(user.getSex()) : user.getSex() != null)
+            return false;
+        if (getTel() != null ? !getTel().equals(user.getTel()) : user.getTel() != null)
+            return false;
+        if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null)
+            return false;
+        return getToken() != null ? getToken().equals(user.getToken()) : user.getToken() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        result = 31 * result + (getNickName() != null ? getNickName().hashCode() : 0);
+        result = 31 * result + (getDate() != null ? getDate().hashCode() : 0);
+        result = 31 * result + (getSex() != null ? getSex().hashCode() : 0);
+        result = 31 * result + (getTel() != null ? getTel().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        result = 31 * result + (getToken() != null ? getToken().hashCode() : 0);
+        return result;
     }
 }

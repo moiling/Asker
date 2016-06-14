@@ -6,24 +6,20 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_margin="16dp"
+        android:padding="16dp"
         android:text="教师信息"
         android:focusable="true"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/primary_text"
         android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/div"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:background="@color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:minHeight="48dp"
         android:orientation="horizontal">
 
@@ -33,7 +29,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="学校"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
@@ -45,17 +41,23 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/primary_text"
             android:textSize="16sp"
             tools:text="重庆邮电大学" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/div"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:background="@color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:minHeight="48dp"
         android:orientation="horizontal">
 
@@ -65,7 +67,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="院系"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
@@ -77,17 +79,23 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/primary_text"
             android:textSize="16sp"
             tools:text="软件工程" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/div"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:background="@color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:minHeight="48dp"
         android:orientation="horizontal">
 
@@ -97,7 +105,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="姓名"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
@@ -109,7 +117,7 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/primary_text"
             android:textSize="16sp"
             tools:text="凌霄" />
 
