@@ -36,7 +36,7 @@
             android:layout_marginTop="16dp"
             android:background="@null"
             android:gravity="top"
-            android:hint="回复内容"
+            android:hint="@string/reply_content"
             android:inputType="text"
             android:lineSpacingExtra="4dp"
             android:minHeight="128dp"

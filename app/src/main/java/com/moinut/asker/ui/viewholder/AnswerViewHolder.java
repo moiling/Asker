@@ -36,24 +36,28 @@ public class AnswerViewHolder extends BaseViewHolder<Answer> {
         super.setData(data);
         String name = data.getAuthorName();
         if (name == null) {
-            author.setText("一位没有名字的用户");
+            author.setText(R.string.no_name_user);
         } else {
             author.setText(data.getAuthorName());
         }
         content.setText(data.getContent());
         date.setText(data.getDateFormat());
         likeNumber.setText(data.getLikeNumber() - data.getDislikeNumber() + "");
-        if (data.getAuthorType().equals(Const.API_STUDENT)) {
-            authorType.setText("学生");
-            authorType.setBackgroundResource(R.drawable.bg_student_type);
-        } else if (data.getAuthorType().equals(Const.API_TEACHER)){
-            authorType.setText("教师");
-            authorType.setBackgroundResource(R.drawable.bg_teacher_type);
-        } else {
-            authorType.setText("非法用户");
-            authorType.setBackgroundResource(R.drawable.bg_un_know_type);
+        switch (data.getAuthorType()) {
+            case Const.API_STUDENT:
+                authorType.setText(R.string.student);
+                authorType.setBackgroundResource(R.drawable.bg_student_type);
+                break;
+            case Const.API_TEACHER:
+                authorType.setText(R.string.teacher);
+                authorType.setBackgroundResource(R.drawable.bg_teacher_type);
+                break;
+            default:
+                authorType.setText(R.string.wrong_user);
+                authorType.setBackgroundResource(R.drawable.bg_un_know_type);
+                break;
         }
-        like.setOnClickListener(v -> Toast.makeText(v.getContext(), "喜欢", Toast.LENGTH_SHORT).show());
-        dislike.setOnClickListener(v -> Toast.makeText(v.getContext(), "不喜欢", Toast.LENGTH_SHORT).show());
+        like.setOnClickListener(v -> Toast.makeText(v.getContext(), R.string.like, Toast.LENGTH_SHORT).show());
+        dislike.setOnClickListener(v -> Toast.makeText(v.getContext(), R.string.dislike, Toast.LENGTH_SHORT).show());
     }
 }

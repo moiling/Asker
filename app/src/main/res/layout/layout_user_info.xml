@@ -8,8 +8,8 @@
 
     <TextView
         android:padding="16dp"
-        android:text="基本信息"
-        android:textColor="@color/primary_text"
+        android:text="@string/base_info"
+        android:textColor="@color/secondary_text"
         android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -28,16 +28,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="昵称"
+            android:text="@string/nick_name"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edit_name"
-            android:hint="未填写"
+            android:hint="@string/un_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
@@ -66,7 +66,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="性别"
+            android:text="@string/sex"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
@@ -74,7 +74,7 @@
             android:id="@+id/rg_sex"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="Male"
+                android:text="@string/male"
                 android:checked="true"
                 android:button="@null"
                 android:textColorHighlight="@color/colorAccent"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="Female"
+                android:text="@string/female"
                 android:button="@null"
                 android:textColorHighlight="@color/colorAccent"
                 android:textColor="@color/selector_radio_text"
@@ -124,16 +124,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="电话"
+            android:text="@string/tel"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edit_tel"
-            android:hint="未填写"
+            android:hint="@string/un_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
@@ -162,16 +162,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="邮箱"
+            android:text="@string/email"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edit_email"
-            android:hint="未填写"
+            android:hint="@string/un_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="textEmailAddress"

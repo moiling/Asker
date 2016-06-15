@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.User;
@@ -55,7 +55,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     }
 
     private void initToolbar() {
-        mToolbar.setTitle("Login");
+        mToolbar.setTitle(R.string.login);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
@@ -63,11 +63,11 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
 
     private void login() {
         if (mEditAccountId.getText().toString().isEmpty()) {
-            mEditAccountId.setError("账号不能为空");
+            mEditAccountId.setError(getString(R.string.account_id_not_null));
             return;
         }
         if (mEditPassword.getText().toString().isEmpty()) {
-            mEditPassword.setError("密码不能为空");
+            mEditPassword.setError(getString(R.string.password_not_null));
             return;
         }
         mLoginPresenter.login(mEditAccountId.getText().toString(), mEditPassword.getText().toString());
@@ -76,9 +76,23 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     @Override
     public void onShouldRegister(String accountId, String password) {
         dismissProgress();
-        Toast.makeText(this, "未注册", Toast.LENGTH_SHORT).show();
-        // TODO 应该弹出选择框之类的
-        mRegisterPresenter.register(accountId, password, Const.API_STUDENT);
+        new MaterialDialog.Builder(this)
+                .title(R.string.register)
+                .content(R.string.please_choose_register_type)
+                .items(getString(R.string.student), getString(R.string.teacher))
+                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
+                    switch (which) {
+                        case 0:
+                            mRegisterPresenter.register(accountId, password, Const.API_STUDENT);
+                            break;
+                        case 1:
+                            mRegisterPresenter.register(accountId, password, Const.API_TEACHER);
+                            break;
+                    }
+                    return true;
+                })
+                .negativeText(R.string.cancer)
+                .show();
     }
 
     @Override
@@ -90,29 +104,29 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     @Override
     public void onLoginError(String errorInfo) {
         dismissProgress();
-        showDialog("ERROR", errorInfo);
+        showDialog(getString(R.string.error), errorInfo);
     }
 
     @Override
     public void onLoginProgress() {
-        showProgress("登录中");
+        showProgress(getString(R.string.logging));
     }
 
     @Override
     public void onRegisterSuccess(String info) {
         dismissProgress();
-        showDialog("SUCCESS", info);
+        showDialog(getString(R.string.success), getString(R.string.register_success_login), (dialog, which) -> login());
     }
 
     @Override
     public void onRegisterError(String info) {
-        showDialog("ERROR", info);
+        showDialog(getString(R.string.error), info);
         dismissProgress();
     }
 
     @Override
     public void onRegisterProgress() {
-        showProgress("注册中");
+        showProgress(getString(R.string.registering));
     }
 }
 

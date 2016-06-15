@@ -8,7 +8,13 @@ import java.util.Date;
 
 public class TimeUtils {
 
+    public static final int SECOND = 60;
+    public static final int HOUR = 3600;
+    public static final int DAY = 86400;
+    public static final int WEEK = 604800;
+
     public static final String TAG = TimeUtils.class.getName();
+
     /**
      * 2000-00-00 00:00:00 转 Date
      */
@@ -100,30 +106,44 @@ public class TimeUtils {
      */
     public static String convertTimeToFormat(Date date, long timeStamp) {
         long curTime = new Date().getTime();
-        long time = (curTime - timeStamp) / 1000;
-        if (time < 60 && time >= 0) {
-            return "刚刚";
-        } else if (time >= 60 && time < 3600) {
-            return time / 60 + "分钟前";
-        } else if (time >= 3600 && time < 3600 * 24) {
-            return time / 3600 + "小时前";
-        } else if (time >= 3600 * 24 && time < 3600 * 24 * 1) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            return "今天 " + sdf.format(date);
-        } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            return "昨天 " + sdf.format(date);
+        long delta = (curTime - timeStamp) / 1000;
+        if (delta > 0) {
+            if (delta / TimeUtils.SECOND < 1) {
+                //return delta + "秒前";
+                return "刚刚";
+            } else if (delta / TimeUtils.HOUR < 1) {
+                return delta / TimeUtils.SECOND + "分钟前";
+            } else if (delta / TimeUtils.DAY < 2 && new Date().getDay() == date.getDay()) {
+                return delta / TimeUtils.HOUR + "小时前";
+            } else if (delta / TimeUtils.DAY < 3 && new Date().getDay() == new Date(date.getTime() + TimeUtils.DAY * 1000).getDay()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                return "昨天 " + sdf.format(date);
+            } else if (delta / TimeUtils.DAY < 4 && new Date().getDay() == new Date(date.getTime() + TimeUtils.DAY * 1000 * 2).getDay()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                return "前天 " + sdf.format(date);
+            } else {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                return sdf.format(date);
+            }
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            return sdf.format(date);
+            delta = -delta;
+            if (delta / TimeUtils.SECOND < 1) {
+                return delta + "秒后";
+            } else if (delta / TimeUtils.HOUR < 1) {
+                return delta / TimeUtils.SECOND + "分钟后";
+            } else if (delta / TimeUtils.DAY > -2 && new Date().getDay() == date.getDay()) {
+                return delta / TimeUtils.HOUR + "小时后";
+            } else if (delta / TimeUtils.DAY > -3 && new Date().getDay() == new Date(date.getTime() - TimeUtils.DAY).getDay()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                return "明天 " + sdf.format(date);
+            } else if (delta / TimeUtils.DAY > -4 && new Date().getDay() == new Date(date.getTime() - TimeUtils.DAY * 2).getDay()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                return "后天 " + sdf.format(date);
+            } else {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                return sdf.format(date);
+            }
         }
-        /*else if (time >= 3600 * 24 * 30 && time < 3600 * 24 * 30 * 12) {
-            return time / 3600 / 24 / 30 + "个月前";
-        } else if (time >= 3600 * 24 * 30 * 12) {
-            return time / 3600 / 24 / 30 / 12 + "年前";
-        } else {
-            return "刚刚";
-        }*/
     }
 
     /**

@@ -7,9 +7,9 @@
 
     <TextView
         android:padding="16dp"
-        android:text="学生信息"
+        android:text="@string/student_info"
         android:focusable="true"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/secondary_text"
         android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -28,16 +28,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="学校"
+            android:text="@string/college"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edit_college"
-            android:hint="未填写"
+            android:hint="@string/un_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
@@ -66,16 +66,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="年级"
+            android:text="@string/grade"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edit_year"
-            android:hint="未填写 (请填写入学年份,如:2014)"
+            android:hint="@string/un_edit_year"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
@@ -105,16 +105,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="院系"
+            android:text="@string/academy"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edit_academy"
-            android:hint="未填写"
+            android:hint="@string/un_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"
@@ -143,16 +143,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="专业"
+            android:text="@string/major"
             android:textColor="@color/secondary_text"
             android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edit_major"
-            android:hint="未填写"
+            android:hint="@string/un_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="3"
             android:background="@null"
             android:gravity="center_vertical"
             android:inputType="text"

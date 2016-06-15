@@ -45,7 +45,7 @@
                     android:id="@+id/edit_account_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Account Id"
+                    android:hint="@string/account_id"
                     android:inputType="text"
                     android:maxLines="1" />
 
@@ -59,7 +59,7 @@
                     android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"

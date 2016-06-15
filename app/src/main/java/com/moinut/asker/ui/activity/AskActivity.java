@@ -74,15 +74,15 @@ public class AskActivity extends BaseActivity implements IAskView {
 
     private void send() {
         if (APP.getUser(this) == null || APP.getUser(this).getToken().isEmpty()) {
-            Toast.makeText(this, "用户未登录, 请登录了再来 (咦?你不登录怎么进来的……", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.un_login_please_login, Toast.LENGTH_SHORT).show();
             return;
         }
         if (mEditTitle.getText().toString().isEmpty()) {
-            mEditTitle.setError("标题不能为空");
+            mEditTitle.setError(getString(R.string.title_not_null));
             return;
         }
         if (mEditType.getText().toString().isEmpty()) {
-            mEditType.setError("类型不能为空");
+            mEditType.setError(getString(R.string.type_not_null));
             return;
         }
         mAskPresenter.ask(APP.getUser(this).getToken(),
@@ -94,18 +94,18 @@ public class AskActivity extends BaseActivity implements IAskView {
     @Override
     public void onAskSuccess(String info) {
         dismissProgress();
-        Toast.makeText(this, "提问成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.ask_success, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onAskError(String info) {
         dismissProgress();
-        showDialog("ERROR", info);
+        showDialog(getString(R.string.error), info);
     }
 
     @Override
     public void onProgress() {
-        showProgress("发表中");
+        showProgress(getString(R.string.asking));
     }
 }

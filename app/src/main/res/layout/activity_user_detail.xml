@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/div"
+    android:background="@color/white"
     tools:context="com.moinut.asker.ui.activity.UserDetailActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -60,7 +60,7 @@
                 android:layout_marginBottom="16dp"
                 android:textColor="@color/white"
                 android:background="@drawable/select_button_logout"
-                android:text="Log out" />
+                android:text="@string/log_out" />
 
         </LinearLayout>
 

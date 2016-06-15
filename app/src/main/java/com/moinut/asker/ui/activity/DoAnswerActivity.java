@@ -47,7 +47,7 @@ public class DoAnswerActivity extends BaseActivity implements IDoAnswerView {
     }
 
     private void initToolbar() {
-        mToolbar.setTitle("Answer");
+        mToolbar.setTitle(R.string.answer);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
@@ -82,7 +82,7 @@ public class DoAnswerActivity extends BaseActivity implements IDoAnswerView {
 
     private void send() {
         if (mEditContent.getText().toString().isEmpty()) {
-            mEditContent.setError("内容不能为空");
+            mEditContent.setError(getString(R.string.content_not_null));
             return;
         }
         mDoAnswerPresenter.answer(mEditContent.getText().toString());
@@ -91,18 +91,18 @@ public class DoAnswerActivity extends BaseActivity implements IDoAnswerView {
     @Override
     public void onDoAnswerSuccess(String info) {
         dismissProgress();
-        Toast.makeText(this, "回复成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.reply_success, Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
     public void onDoAnswerError(String info) {
         dismissProgress();
-        showDialog("ERROR", info);
+        showDialog(getString(R.string.error), info);
     }
 
     @Override
     public void onDoAnswerProgress() {
-        showProgress("回复中");
+        showProgress(getString(R.string.answering));
     }
 }

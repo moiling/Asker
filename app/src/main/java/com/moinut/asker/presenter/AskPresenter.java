@@ -2,6 +2,7 @@ package com.moinut.asker.presenter;
 
 import android.content.Context;
 
+import com.moinut.asker.R;
 import com.moinut.asker.event.AskEvent;
 import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
@@ -34,7 +35,7 @@ public class AskPresenter extends BasePresenter<IAskView> {
                     if (v != null) {
                         if (e instanceof HttpException) {
                             if (((HttpException) e).code() == 401) {
-                                v.onAskError("本地储存账号信息过期\n请重新登录!");
+                                v.onAskError(context.getString(R.string.token_out_date_login_again));
                             } else {
                                 v.onAskError(((HttpException) e).message());
                             }

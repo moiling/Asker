@@ -24,6 +24,7 @@ import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.ui.fragment.MeFragment;
 import com.moinut.asker.ui.fragment.QuestionFragment;
+import com.moinut.asker.ui.fragment.SearchFragment;
 import com.moinut.asker.ui.fragment.StarFragment;
 import com.moinut.asker.utils.FragUtils;
 
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity
     private QuestionFragment mQuestionFragment;
     private MeFragment mMeFragment;
     private StarFragment mStarFragment;
+    private SearchFragment mSearchFragment;
     private Fragment mCurrentFragment;
 
     @Override
@@ -65,6 +67,7 @@ public class MainActivity extends BaseActivity
         mQuestionFragment = new QuestionFragment();
         mMeFragment = new MeFragment();
         mStarFragment = new StarFragment();
+        mSearchFragment = new SearchFragment();
 
         FragUtils.addFragmentToActivity(getSupportFragmentManager(), mCurrentFragment = mQuestionFragment, R.id.content_main);
     }
@@ -77,12 +80,12 @@ public class MainActivity extends BaseActivity
 
     private void initUser() {
         if ((mUser = APP.getUser(this)) == null) {
-            mUserName.setText("点击登录");
+            mUserName.setText(R.string.click_to_login);
             mUserName.setOnClickListener(new ToLogin());
         } else {
             String name = mUser.getNickName();
             if (name == null) {
-                mUserName.setText("野生用户, 快点击完善");
+                mUserName.setText(R.string.please_edit_info);
             } else {
                 mUserName.setText(name);
             }
@@ -111,7 +114,7 @@ public class MainActivity extends BaseActivity
             if (APP.getUser(this).getType().equals(Const.API_STUDENT)) {
                 startActivity(new Intent(MainActivity.this, AskActivity.class));
             } else {
-                Toast.makeText(this, "只有学生才可以发布问题哟", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.only_student_can_ask, Toast.LENGTH_SHORT).show();
             }
         } else {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -171,18 +174,19 @@ public class MainActivity extends BaseActivity
         if (id == R.id.nav_question) {
             if (mCurrentFragment != mQuestionFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mQuestionFragment, R.id.content_main);
             mFab.setVisibility(View.VISIBLE);
-            mToolbar.setTitle("Asker");
+            mToolbar.setTitle(R.string.asker);
         } else if (id == R.id.nav_stars) {
             if (mCurrentFragment != mStarFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mStarFragment, R.id.content_main);
             mFab.setVisibility(View.GONE);
-            mToolbar.setTitle("Star");
+            mToolbar.setTitle(R.string.star);
         } else if (id == R.id.nav_me) {
             if (mCurrentFragment != mMeFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mMeFragment, R.id.content_main);
             mFab.setVisibility(View.GONE);
-            mToolbar.setTitle("Me");
+            mToolbar.setTitle(R.string.me);
         } else if (id == R.id.nav_search) {
+            if (mCurrentFragment != mSearchFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mSearchFragment, R.id.content_main);
             mFab.setVisibility(View.GONE);
-            mToolbar.setTitle("Search");
+            mToolbar.setTitle(R.string.search);
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_ask) {

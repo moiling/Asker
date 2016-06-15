@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.moinut.asker.APP;
+import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
@@ -29,7 +30,7 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
         Student old = (Student) user;
         if (old != null) {
             if (student.equals(old)) {
-                Toast.makeText(context, "没有任何修改呀", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.not_change, Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -38,17 +39,7 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
             RequestManager.getInstance().updateStudentInfo(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
                 @Override
                 public void onError(Throwable e) {
-                    if (v != null) {
-                        if (e instanceof HttpException) {
-                            if (((HttpException) e).code() == 401) {
-                                v.onUpdateError("本地储存账号信息过期\n请重新登录!");
-                            } else {
-                                v.onUpdateError(((HttpException) e).message());
-                            }
-                        } else {
-                            v.onUpdateError(e.toString());
-                        }
-                    }
+                    doError(e);
                 }
 
                 @Override
@@ -66,36 +57,25 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
         Teacher old = (Teacher) user;
         if (old != null) {
             if (teacher.equals(old)) {
-                Toast.makeText(context, "没有任何修改呀", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.not_change, Toast.LENGTH_SHORT).show();
                 return;
             }
         }
         if (v != null) {
             v.onUpdateProgress();
             RequestManager.getInstance().updateTeacherInfo(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
-                        @Override
-                        public void onError(Throwable e) {
-                            if (v != null) {
-                                if (e instanceof HttpException) {
-                                    if (((HttpException) e).code() == 401) {
-                                        v.onUpdateError("本地储存账号信息过期\n请重新登录!");
-                                    } else {
-                                        v.onUpdateError(((HttpException) e).message());
-                                    }
-                                } else {
-                                    v.onUpdateError(e.toString());
-                                }
-                            }
-                        }
+                @Override
+                public void onError(Throwable e) {
+                    doError(e);
+                }
 
-                        @Override
-                        public void onNext(String s) {
-                            if (v != null) v.onUpdateSuccess(s);
-                            APP.setUser(context, teacher);
-                        }
-                    }), token, teacher.getNickName(), teacher.getSex(), teacher.getTel(), teacher.getEmail(),
-                    teacher.getCollege(), teacher.getAcademy(), teacher.getRealName());
-
+                @Override
+                public void onNext(String s) {
+                    if (v != null) v.onUpdateSuccess(s);
+                    APP.setUser(context, teacher);
+                }
+            }), token, teacher.getNickName(), teacher.getSex(), teacher.getTel(), teacher.getEmail(),
+            teacher.getCollege(), teacher.getAcademy(), teacher.getRealName());
         }
     }
 
@@ -112,18 +92,7 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        if (v != null) {
-                            if (e instanceof HttpException) {
-                                if (((HttpException) e).code() == 401) {
-                                    v.onGetError("本地储存账号信息过期\n请重新登录!");
-                                } else {
-                                    v.onGetError(((HttpException) e).message());
-                                }
-                            } else {
-                                v.onGetError(e.toString());
-                            }
-                        }
+                        doError(e);
                     }
                 }), token);
                 return;
@@ -138,20 +107,24 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        if (v != null) {
-                            if (e instanceof HttpException) {
-                                if (((HttpException) e).code() == 401) {
-                                    v.onGetError("本地储存账号信息过期\n请重新登录!");
-                                } else {
-                                    v.onGetError(((HttpException) e).message());
-                                }
-                            } else {
-                                v.onGetError(e.toString());
-                            }
-                        }
+                        doError(e);
                     }
                 }), token);
+            }
+        }
+    }
+
+    private void doError(Throwable e) {
+        e.printStackTrace();
+        if (v != null) {
+            if (e instanceof HttpException) {
+                if (((HttpException) e).code() == 401) {
+                    v.onGetError(context.getString(R.string.token_out_date_login_again));
+                } else {
+                    v.onGetError(((HttpException) e).message());
+                }
+            } else {
+                v.onGetError(e.toString());
             }
         }
     }

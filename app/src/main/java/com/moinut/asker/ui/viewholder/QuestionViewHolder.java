@@ -50,7 +50,7 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
         content.setText(data.getContent());
         String name = data.getAuthorName();
         if (name == null) {
-            author.setText("一位没有名字的用户");
+            author.setText(R.string.no_name_user);
         } else {
             author.setText(data.getAuthorName());
         }
@@ -73,14 +73,14 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
                         e.printStackTrace();
                         if (e instanceof HttpException) {
                             if (((HttpException) e).code() == 401) {
-                                Toast.makeText(getContext(), "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.token_out_date_login_again, Toast.LENGTH_SHORT).show();
                             }
                         }
                         // 其他不想处理……
                     }
                 }), APP.getUser(getContext()).getToken(), data.getId());
             } else {
-                Toast.makeText(getContext(), "请登录", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.please_login, Toast.LENGTH_SHORT).show();
             }
         });
         starImage.setColorFilter(data.isStared() ? ContextCompat.getColor(getContext(), R.color.colorAccent)

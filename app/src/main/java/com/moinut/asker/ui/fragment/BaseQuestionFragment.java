@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.event.AnswerEvent;
 import com.moinut.asker.event.AskEvent;
+import com.moinut.asker.event.ExitEvent;
 import com.moinut.asker.event.LoginEvent;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.presenter.QuestionPresenter;
@@ -39,6 +41,8 @@ public abstract class BaseQuestionFragment extends BaseFragment implements
         RecyclerArrayAdapter.OnLoadMoreListener,
         SwipeRefreshLayout.OnRefreshListener,
         IQuestionView {
+
+    public static final String TAG = BaseQuestionFragment.class.getName();
 
     @Bind(R.id.rv_questions)
     EasyRecyclerView mRecyclerView;
@@ -108,16 +112,25 @@ public abstract class BaseQuestionFragment extends BaseFragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginEvent(LoginEvent event){
+        Log.d(TAG, "onLoginEvent: ");
+        onRefresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onExitEvent(ExitEvent event){
+        Log.d(TAG, "onExitEvent: ");
         onRefresh();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAskEvent(AskEvent event){
+        Log.d(TAG, "onAskEvent: ");
         onRefresh();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAnswerEvent(AnswerEvent event){
+        Log.d(TAG, "onAnswerEvent: ");
         onRefresh();
     }
 
@@ -138,7 +151,11 @@ public abstract class BaseQuestionFragment extends BaseFragment implements
         mAdapter.addAll(questions);
     }
 
-    public QuestionPresenter getQuestionPresenter() {
+    protected QuestionPresenter getQuestionPresenter() {
         return mQuestionPresenter;
+    }
+
+    protected QuestionAdapter getAdapter() {
+        return mAdapter;
     }
 }

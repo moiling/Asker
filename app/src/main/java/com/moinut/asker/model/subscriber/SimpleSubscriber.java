@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.moinut.asker.BuildConfig;
+import com.moinut.asker.R;
 import com.moinut.asker.ui.component.task.progress.ProgressCancelListener;
 import com.moinut.asker.ui.component.task.progress.ProgressDialogHandler;
 
@@ -52,9 +53,9 @@ public class SimpleSubscriber<T> extends Subscriber<T> implements ProgressCancel
     @Override
     public void onError(Throwable e) {
         if (e instanceof SocketTimeoutException) {
-            Toast.makeText(context, "网络中断，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.network_break, Toast.LENGTH_SHORT).show();
         } else if (e instanceof ConnectException) {
-            Toast.makeText(context, "网络异常，请检查您的网络状态", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.network_connect_error, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

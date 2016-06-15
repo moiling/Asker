@@ -14,11 +14,14 @@ import android.widget.Toast;
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
+import com.moinut.asker.event.ExitEvent;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.presenter.UserInfoPresenter;
 import com.moinut.asker.ui.vu.IUserInfoView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,7 +87,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             mUserInfoPresenter = new UserInfoPresenter(this, this, currentUser.getType());
             mToken = currentUser.getToken();
         } else {
-            Toast.makeText(this, "未登录, 你怎么进来的!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.un_login_how_to_come_in, Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -93,6 +96,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         initToolbar();
         mBtnExit.setOnClickListener(v -> {
             APP.exitUser(this);
+            EventBus.getDefault().post(new ExitEvent());
             finish();
         });
         if (mUserInfoPresenter.getUserType().equals(Const.API_STUDENT)) {
@@ -108,7 +112,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     }
 
     private void initToolbar() {
-        mToolbar.setTitle("Detail");
+        mToolbar.setTitle(R.string.detail);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
@@ -136,7 +140,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         mEditEmail.setText(teacher.getEmail());
         mEditTel.setText(teacher.getTel());
         mEditRealName.setText(teacher.getRealName());
-        if (teacher.getSex().equals(Const.API_FEMALE)) {
+        if (teacher.getSex() != null && teacher.getSex().equals(Const.API_FEMALE)) {
             mRbSexFemale.setChecked(true);
         } else {
             mRbSexMale.setChecked(true);
@@ -177,38 +181,32 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             }
 
             String nickName = mEditName.getText().toString();
-            if (!nickName.isEmpty()) student.setNickName(nickName);
-
-            student.setSex(mRbSexFemale.isChecked() ? Const.API_FEMALE : Const.API_MALE);
-
             String tel = mEditTel.getText().toString();
-            if (!tel.isEmpty()) student.setTel(tel);
-
             String email = mEditEmail.getText().toString();
+            String year = mEditYear.getText().toString();
+            String college = mEditCollege.getText().toString();
+            String academy = mEditAcademy.getText().toString();
+            String major = mEditMajor.getText().toString();
+
+            if (!nickName.isEmpty()) student.setNickName(nickName);
+            student.setSex(mRbSexFemale.isChecked() ? Const.API_FEMALE : Const.API_MALE);
+            if (!tel.isEmpty()) student.setTel(tel);
             Pattern pattern = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email);
-            if (!matcher.matches()) {
-                mEditEmail.setError("邮箱格式不对");
+            if (!matcher.matches() && !email.isEmpty()) {
+                mEditEmail.setError(getString(R.string.wrong_email));
                 return;
             }
             if (!email.isEmpty()) student.setEmail(email);
-
-            String year = mEditYear.getText().toString();
             pattern = Pattern.compile("^\\d{4}$");
             matcher = pattern.matcher(year);
-            if (!matcher.matches()) {
-                mEditYear.setError("年级格式不对, 请输入4位数字的入学年份");
+            if (!matcher.matches() && !year.isEmpty()) {
+                mEditYear.setError(getString(R.string.wrong_grade_year));
                 return;
             }
             if (!year.isEmpty()) student.setYear(Integer.parseInt(year));
-
-            String college = mEditCollege.getText().toString();
             if (!college.isEmpty()) student.setCollege(college);
-
-            String academy = mEditAcademy.getText().toString();
             if (!academy.isEmpty()) student.setAcademy(academy);
-
-            String major = mEditMajor.getText().toString();
             if (!major.isEmpty()) student.setMajor(major);
 
             mUserInfoPresenter.updateStudent(mToken, student);
@@ -229,29 +227,24 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             }
 
             String nickName = mEditName.getText().toString();
-            if (!nickName.isEmpty()) teacher.setNickName(nickName);
-
-            teacher.setSex(mRbSexFemale.isChecked() ? Const.API_FEMALE : Const.API_MALE);
-
             String tel = mEditTel.getText().toString();
-            if (!tel.isEmpty()) teacher.setTel(tel);
-
             String email = mEditEmail.getText().toString();
+            String college = mEditCollege.getText().toString();
+            String academy = mEditAcademy.getText().toString();
+            String realName = mEditRealName.getText().toString();
+
+            if (!nickName.isEmpty()) teacher.setNickName(nickName);
+            teacher.setSex(mRbSexFemale.isChecked() ? Const.API_FEMALE : Const.API_MALE);
+            if (!tel.isEmpty()) teacher.setTel(tel);
             Pattern pattern = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
-                mEditEmail.setError("邮箱格式不对");
+                mEditEmail.setError(getString(R.string.wrong_email));
                 return;
             }
             if (!email.isEmpty()) teacher.setEmail(email);
-
-            String college = mEditCollege.getText().toString();
             if (!college.isEmpty()) teacher.setCollege(college);
-
-            String academy = mEditAcademy.getText().toString();
             if (!academy.isEmpty()) teacher.setAcademy(academy);
-
-            String realName = mEditRealName.getText().toString();
             if (!realName.isEmpty()) teacher.setRealName(realName);
 
             mUserInfoPresenter.updateTeacher(mToken, teacher);
@@ -270,30 +263,30 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     @Override
     public void onGetError(String info) {
         dismissProgress();
-        showDialog("ERROR", info);
+        showDialog(getString(R.string.error), info);
     }
 
 
     @Override
     public void onGetProgress() {
-        showProgress("获取信息中");
+        showProgress(getString(R.string.getting_info));
     }
 
     @Override
     public void onUpdateSuccess(String info) {
         dismissProgress();
-        showDialog("SUCCESS", info);
+        showDialog(getString(R.string.success), info);
     }
 
     @Override
     public void onUpdateError(String info) {
         dismissProgress();
-        showDialog("ERROR", info);
+        showDialog(getString(R.string.error), info);
     }
 
     @Override
     public void onUpdateProgress() {
-        showProgress("更新信息中");
+        showProgress(getString(R.string.updating_info));
     }
 
 }

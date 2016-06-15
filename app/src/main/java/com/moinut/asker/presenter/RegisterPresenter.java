@@ -2,6 +2,7 @@ package com.moinut.asker.presenter;
 
 import android.content.Context;
 
+import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
@@ -19,7 +20,7 @@ public class RegisterPresenter extends BasePresenter<IRegisterView> {
     public void register(String accountId, String password, String type) {
         if (v != null) {
             if (!type.equals(Const.API_STUDENT) && !type.equals(Const.API_TEACHER)) {
-                v.onRegisterError("注册类型错误");
+                v.onRegisterError(context.getString(R.string.wrong_register_type));
                 return;
             }
 

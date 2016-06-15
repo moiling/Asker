@@ -44,7 +44,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .content(content)
                 .theme(Theme.LIGHT)
-                .positiveText("OK")
+                .positiveText(R.string.ok)
+                .positiveColor(ContextCompat.getColor(this, R.color.colorAccent))
+                .show();
+    }
+
+    protected void showDialog(String title, String content, MaterialDialog.SingleButtonCallback callback) {
+        new MaterialDialog.Builder(this)
+                .title(title)
+                .titleColor(ContextCompat.getColor(this, R.color.primary_text))
+                .backgroundColor(ContextCompat.getColor(this, R.color.white))
+                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .content(content)
+                .theme(Theme.LIGHT)
+                .positiveText(R.string.ok)
+                .onPositive(callback)
                 .positiveColor(ContextCompat.getColor(this, R.color.colorAccent))
                 .show();
     }

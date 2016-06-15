@@ -6,31 +6,31 @@
             android:checked="true"
             android:id="@+id/nav_question"
             android:icon="@drawable/ic_live_help"
-            android:title="Question" />
+            android:title="@string/question" />
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
-            android:title="Search" />
+            android:title="@string/search" />
         <item
             android:id="@+id/nav_stars"
             android:icon="@drawable/ic_favorite"
-            android:title="Stars" />
+            android:title="@string/stars" />
         <item
             android:id="@+id/nav_me"
             android:icon="@drawable/ic_account_box"
-            android:title="Me" />
+            android:title="@string/me" />
     </group>
 
-    <item android:title="Action">
+    <item android:title="@string/more">
         <menu>
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
-                android:title="Settings" />
+                android:title="@string/settings" />
             <item
                 android:id="@+id/nav_ask"
                 android:icon="@drawable/ic_send"
-                android:title="Ask" />
+                android:title="@string/ask" />
         </menu>
     </item>
 

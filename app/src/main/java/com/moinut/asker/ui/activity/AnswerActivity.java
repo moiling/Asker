@@ -103,7 +103,7 @@ public class AnswerActivity extends BaseActivity implements
     }
 
     private void initToolbar() {
-        mToolbar.setTitle("Answer");
+        mToolbar.setTitle(R.string.answer);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());

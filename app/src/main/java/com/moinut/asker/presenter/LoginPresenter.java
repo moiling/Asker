@@ -3,6 +3,7 @@ package com.moinut.asker.presenter;
 import android.content.Context;
 
 import com.moinut.asker.APP;
+import com.moinut.asker.R;
 import com.moinut.asker.config.Api;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.event.LoginEvent;
@@ -33,12 +34,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
                             if (info.equals(Const.API_UN_REGISTER)) {
                                 v.onShouldRegister(accountId, password);
                             } else if (info.equals(Const.API_WRONG_PASSWORD)) {
-                                v.onLoginError("密码输入错误");
+                                v.onLoginError(context.getString(R.string.wrong_password));
                             }
                         } else {
                             User user = userApiWrapper.getData();
                             APP.setUser(context, user);
-                            EventBus.getDefault().post(LoginEvent.class);
+                            EventBus.getDefault().post(new LoginEvent());
                             v.onLoginSuccess(user);
                         }
                     }

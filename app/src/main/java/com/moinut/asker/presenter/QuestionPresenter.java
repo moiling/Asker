@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.moinut.asker.R;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
@@ -38,14 +39,7 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
             }
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-                if (e instanceof HttpException) {
-                    if (((HttpException) e).code() == 401) {
-                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    }
-                }
-                // 其他错误不处理
+                doError(e);
             }
         }), page, count, token);
     }
@@ -62,14 +56,7 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
             }
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-                if (e instanceof HttpException) {
-                    if (((HttpException) e).code() == 401) {
-                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    }
-                }
-                // 其他错误不处理
+                doError(e);
             }
         }), page, count, token);
     }
@@ -87,14 +74,7 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
             }
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-                if (e instanceof HttpException) {
-                    if (((HttpException) e).code() == 401) {
-                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    }
-                }
-                // 其他错误不处理
+                doError(e);
             }
         }), page, count, token);
     }
@@ -111,14 +91,7 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
             }
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-                if (e instanceof HttpException) {
-                    if (((HttpException) e).code() == 401) {
-                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    }
-                }
-                // 其他错误不处理
+                doError(e);
             }
         }), page, count, token);
     }
@@ -136,14 +109,7 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
             }
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-                if (e instanceof HttpException) {
-                    if (((HttpException) e).code() == 401) {
-                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    }
-                }
-                // 其他错误不处理
+                doError(e);
             }
         }), page, count, token);
     }
@@ -160,15 +126,19 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
             }
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
-                if (e instanceof HttpException) {
-                    if (((HttpException) e).code() == 401) {
-                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                    }
-                }
-                // 其他错误不处理
+                doError(e);
             }
         }), page, count, token);
+    }
+
+    private void doError(Throwable e) {
+        e.printStackTrace();
+        if (e instanceof HttpException) {
+            if (((HttpException) e).code() == 401) {
+                Toast.makeText(context, R.string.token_out_date_login_again, Toast.LENGTH_SHORT).show();
+                context.startActivity(new Intent(context, LoginActivity.class));
+            }
+        }
+        // 其他错误不处理
     }
 }

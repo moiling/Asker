@@ -43,7 +43,7 @@
                     android:id="@+id/edit_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="标题"
+                    android:hint="@string/title"
                     android:inputType="text"
                     android:maxLines="1" />
 
@@ -60,7 +60,7 @@
                     android:id="@+id/edit_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="类型"
+                    android:hint="@string/type"
                     android:inputType="text"
                     android:maxLength="10"
                     android:maxLines="1" />
@@ -78,7 +78,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@null"
-                android:hint="内容"
+                android:hint="@string/content"
                 android:inputType="text"
                 android:lineSpacingExtra="4dp"
                 android:minLines="5"
