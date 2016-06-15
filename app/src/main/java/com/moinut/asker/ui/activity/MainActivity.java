@@ -24,6 +24,7 @@ import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.ui.fragment.MeFragment;
 import com.moinut.asker.ui.fragment.QuestionFragment;
+import com.moinut.asker.ui.fragment.StarFragment;
 import com.moinut.asker.utils.FragUtils;
 
 import butterknife.Bind;
@@ -48,6 +49,7 @@ public class MainActivity extends BaseActivity
     private User mUser;
     private QuestionFragment mQuestionFragment;
     private MeFragment mMeFragment;
+    private StarFragment mStarFragment;
     private Fragment mCurrentFragment;
 
     @Override
@@ -62,6 +64,7 @@ public class MainActivity extends BaseActivity
     private void initFrag() {
         mQuestionFragment = new QuestionFragment();
         mMeFragment = new MeFragment();
+        mStarFragment = new StarFragment();
 
         FragUtils.addFragmentToActivity(getSupportFragmentManager(), mCurrentFragment = mQuestionFragment, R.id.content_main);
     }
@@ -92,15 +95,7 @@ public class MainActivity extends BaseActivity
         initNavHeader();
 
         mFab.setOnClickListener(view -> {
-            if (APP.getUser(this) != null) {
-                if (APP.getUser(this).getType().equals(Const.API_STUDENT)) {
-                    startActivity(new Intent(MainActivity.this, AskActivity.class));
-                } else {
-                    Toast.makeText(this, "只有学生才可以发布问题哟", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
+            ask();
         });
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -109,6 +104,18 @@ public class MainActivity extends BaseActivity
         toggle.syncState();
 
         mNavigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void ask() {
+        if (APP.getUser(this) != null) {
+            if (APP.getUser(this).getType().equals(Const.API_STUDENT)) {
+                startActivity(new Intent(MainActivity.this, AskActivity.class));
+            } else {
+                Toast.makeText(this, "只有学生才可以发布问题哟", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
     }
 
     private void initNavHeader() {
@@ -163,16 +170,23 @@ public class MainActivity extends BaseActivity
         FragmentManager manager = getSupportFragmentManager();
         if (id == R.id.nav_question) {
             if (mCurrentFragment != mQuestionFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mQuestionFragment, R.id.content_main);
+            mFab.setVisibility(View.VISIBLE);
+            mToolbar.setTitle("Asker");
         } else if (id == R.id.nav_stars) {
-
+            if (mCurrentFragment != mStarFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mStarFragment, R.id.content_main);
+            mFab.setVisibility(View.GONE);
+            mToolbar.setTitle("Star");
         } else if (id == R.id.nav_me) {
             if (mCurrentFragment != mMeFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mMeFragment, R.id.content_main);
+            mFab.setVisibility(View.GONE);
+            mToolbar.setTitle("Me");
         } else if (id == R.id.nav_search) {
-
+            mFab.setVisibility(View.GONE);
+            mToolbar.setTitle("Search");
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_ask) {
-
+            ask();
         }
 
         mDrawer.closeDrawer(GravityCompat.START);

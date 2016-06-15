@@ -12,6 +12,17 @@ public class Teacher extends User implements Cloneable {
         return super.clone();
     }
 
+    public void setUser(User user) {
+        setDate(user.getDate());
+        setEmail(user.getEmail());
+        setId(user.getId());
+        setNickName(user.getNickName());
+        setSex(user.getSex());
+        setTel(user.getTel());
+        setToken(user.getToken());
+        setType(user.getType());
+    }
+
     public String getAcademy() {
         return academy;
     }

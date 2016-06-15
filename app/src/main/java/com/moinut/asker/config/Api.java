@@ -14,4 +14,6 @@ public class Api {
     public static final String API_ANSWER = "/asker/answer.php";
     public static final String API_GET_ANSWERS = "/asker/getAnswers.php";
     public static final String API_STAR_QUESTION = "/asker/starQuestion.php";
+    public static final String API_GET_STAR_QUESTIONS = "/asker/getStarQuestions.php";
+    public static final String API_GET_MY_QUESTIONS = "/asker/getMyQuestions.php";
 }

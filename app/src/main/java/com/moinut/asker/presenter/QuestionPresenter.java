@@ -25,7 +25,7 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
         super(context, v);
     }
 
-    public void onRefresh(String token) {
+    public void onAllQuestionsRefresh(String token) {
         page = 0;
         RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
             @Override
@@ -50,8 +50,106 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
         }), page, count, token);
     }
 
-    public void onLoadMore(String token) {
+    public void onAllQuestionsLoadMore(String token) {
         RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
+            @Override
+            public void onNext(List<Question> questions) {
+                super.onNext(questions);
+                if (v != null) {
+                    v.onLoadMoreEnd(questions);
+                    page++;
+                }
+            }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if (e instanceof HttpException) {
+                    if (((HttpException) e).code() == 401) {
+                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                }
+                // 其他错误不处理
+            }
+        }), page, count, token);
+    }
+
+    public void onStarQuestionsRefresh(String token) {
+        page = 0;
+        RequestManager.getInstance().getStarQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
+            @Override
+            public void onNext(List<Question> questions) {
+                super.onNext(questions);
+                if (v != null) {
+                    v.onRefreshEnd(questions);
+                    page++;
+                }
+            }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if (e instanceof HttpException) {
+                    if (((HttpException) e).code() == 401) {
+                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                }
+                // 其他错误不处理
+            }
+        }), page, count, token);
+    }
+
+    public void onStarQuestionsLoadMore(String token) {
+        RequestManager.getInstance().getStarQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
+            @Override
+            public void onNext(List<Question> questions) {
+                super.onNext(questions);
+                if (v != null) {
+                    v.onLoadMoreEnd(questions);
+                    page++;
+                }
+            }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if (e instanceof HttpException) {
+                    if (((HttpException) e).code() == 401) {
+                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                }
+                // 其他错误不处理
+            }
+        }), page, count, token);
+    }
+
+    public void onMyQuestionsRefresh(String token) {
+        page = 0;
+        RequestManager.getInstance().getMyQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
+            @Override
+            public void onNext(List<Question> questions) {
+                super.onNext(questions);
+                if (v != null) {
+                    v.onRefreshEnd(questions);
+                    page++;
+                }
+            }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if (e instanceof HttpException) {
+                    if (((HttpException) e).code() == 401) {
+                        Toast.makeText(context, "本地储存账号信息过期\n请重新登录!", Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                    }
+                }
+                // 其他错误不处理
+            }
+        }), page, count, token);
+    }
+
+    public void onMyQuestionsLoadMore(String token) {
+        RequestManager.getInstance().getMyQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
             @Override
             public void onNext(List<Question> questions) {
                 super.onNext(questions);

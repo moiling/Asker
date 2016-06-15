@@ -31,6 +31,18 @@ public interface ApiService {
                                                             @Field("token") String token);
 
     @FormUrlEncoded
+    @POST(Api.API_GET_STAR_QUESTIONS)
+    Observable<PageWrapper<List<Question>>> getStarQuestions(@Field("page") int page,
+                                                            @Field("count") int count,
+                                                            @Field("token") String token);
+
+    @FormUrlEncoded
+    @POST(Api.API_GET_MY_QUESTIONS)
+    Observable<PageWrapper<List<Question>>> getMyQuestions(@Field("page") int page,
+                                                             @Field("count") int count,
+                                                             @Field("token") String token);
+
+    @FormUrlEncoded
     @POST(Api.API_ASK_QUESTION)
     Observable<ApiWrapper<String>> askQuestion(@Field("token") String token,
                                                @Field("title") String title,

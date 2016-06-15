@@ -127,6 +127,18 @@ public enum RequestManager {
         return emitObservable(observable, subscriber);
     }
 
+    public Subscription getStarQuestions(Subscriber<List<Question>> subscriber, int page, int count, String token) {
+        Observable<List<Question>> observable = mApiService.getStarQuestions(page, count, token)
+                .map(new PageWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription getMyQuestions(Subscriber<List<Question>> subscriber, int page, int count, String token) {
+        Observable<List<Question>> observable = mApiService.getMyQuestions(page, count, token)
+                .map(new PageWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
     public Subscription askQuestion(Subscriber<String> subscriber, String token, String title, String content, String type) {
         Observable<String> observable = mApiService.askQuestion(token, title, content, type)
                 .map(new ApiWrapperFunc<>());

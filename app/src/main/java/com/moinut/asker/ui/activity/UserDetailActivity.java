@@ -122,7 +122,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         mEditTel.setText(student.getTel());
         mEditMajor.setText(student.getMajor());
         if (student.getYear() != 0) mEditYear.setText(student.getYear() + "");
-        if (student.getSex().equals(Const.API_FEMALE)) {
+        if (student.getSex() != null && student.getSex().equals(Const.API_FEMALE)) {
             mRbSexFemale.setChecked(true);
         } else {
             mRbSexMale.setChecked(true);
@@ -161,10 +161,16 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     }
 
     private void send() {
-        if (mUserInfoPresenter.getUserType().equals(Const.API_STUDENT) && mUserInfoPresenter.getUser() != null) {
+
+        if (mUserInfoPresenter.getUserType().equals(Const.API_STUDENT)) {
             Student student;
             try {
-                student = (Student) ((Student) mUserInfoPresenter.getUser()).clone();
+                if (mUserInfoPresenter.getUser() != null) {
+                    student = (Student) ((Student) mUserInfoPresenter.getUser()).clone();
+                } else {
+                    student = new Student();
+                    student.setUser(APP.getUser(this));
+                }
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 return;
@@ -208,10 +214,15 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             mUserInfoPresenter.updateStudent(mToken, student);
             return;
         }
-        if (mUserInfoPresenter.getUserType().equals(Const.API_TEACHER) && mUserInfoPresenter.getUser() != null) {
+        if (mUserInfoPresenter.getUserType().equals(Const.API_TEACHER)) {
             Teacher teacher;
             try {
-                teacher = (Teacher) ((Teacher) mUserInfoPresenter.getUser()).clone();
+                if (mUserInfoPresenter.getUser() != null) {
+                    teacher = (Teacher) ((Teacher) mUserInfoPresenter.getUser()).clone();
+                } else {
+                    teacher = new Teacher();
+                    teacher.setUser(APP.getUser(this));
+                }
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 return;
@@ -250,8 +261,10 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     @Override
     public void onGetSuccess(User user) {
         dismissProgress();
-        if (user instanceof Student) showStudent((Student) user);
-        else if (user instanceof Teacher) showTeacher((Teacher) user);
+        if (user != null) {
+            if (user instanceof Student) showStudent((Student) user);
+            else if (user instanceof Teacher) showTeacher((Teacher) user);
+        }
     }
 
     @Override
