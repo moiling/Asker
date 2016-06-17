@@ -6,7 +6,7 @@
             android:checked="true"
             android:id="@+id/nav_question"
             android:icon="@drawable/ic_live_help"
-            android:title="@string/question" />
+            android:title="@string/recent" />
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
@@ -23,10 +23,14 @@
 
     <item android:title="@string/more">
         <menu>
-            <item
+            <!--<item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
-                android:title="@string/settings" />
+                android:title="@string/settings" />-->
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info"
+                android:title="@string/about" />
             <item
                 android:id="@+id/nav_ask"
                 android:icon="@drawable/ic_send"

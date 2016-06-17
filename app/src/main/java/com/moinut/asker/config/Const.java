@@ -11,6 +11,8 @@ public class Const {
     public static final String API_FEMALE = "female";
     public static final String API_STAR = "star";
     public static final String API_UN_STAR = "unStar";
+    public static final String API_LIKE = "like";
+    public static final String API_DISLIKE = "dislike";
 
     public static final String INTENT_QUESTION = "question";
 }

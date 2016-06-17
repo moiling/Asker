@@ -20,7 +20,7 @@ import okhttp3.ResponseBody;
  */
 public class FileUtils {
 
-    public static final String TAG = "FileUtils.java";
+    public static final String TAG = FileUtils.class.getName();
 
     private FileUtils() {
         throw new UnsupportedOperationException("FileUtils can't be instantiated");

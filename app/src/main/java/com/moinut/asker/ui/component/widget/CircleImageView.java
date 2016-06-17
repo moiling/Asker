@@ -15,26 +15,19 @@ import android.widget.ImageView;
 
 public class CircleImageView extends ImageView {
     private int mBorderThickness = 0;
-    private Context mContext;
-    private int defaultColor = 0xFFFFFFFF;
-    private int mBorderOutsideColor = 0;
-    private int mBorderInsideColor = 0;
     private int defaultWidth = 0;
     private int defaultHeight = 0;
 
     public CircleImageView(Context context) {
         super(context);
-        mContext = context;
     }
 
     public CircleImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context;
     }
 
     public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mContext = context;
     }
 
     @Override
@@ -61,24 +54,14 @@ public class CircleImageView extends ImageView {
             defaultHeight = getHeight();
         }
 
-        int radius = 0;
-        if (mBorderInsideColor != defaultColor && mBorderOutsideColor != defaultColor) {
-            radius = (defaultWidth < defaultHeight ? defaultWidth : defaultHeight)
-                    / 2 - 2 * mBorderThickness;
-            drawCircleBorder(canvas, radius + mBorderThickness / 2, mBorderInsideColor);
-            drawCircleBorder(canvas, radius + mBorderThickness + mBorderThickness
-                    / 2, mBorderOutsideColor);
-        } else if (mBorderInsideColor != defaultColor && mBorderOutsideColor == defaultColor) {
-            radius = (defaultWidth < defaultHeight ? defaultWidth : defaultHeight)
-                    / 2 - mBorderThickness;
-            drawCircleBorder(canvas, radius + mBorderThickness / 2, mBorderInsideColor);
-        } else if (mBorderInsideColor == defaultColor && mBorderOutsideColor != defaultColor) {
-            radius = (defaultWidth < defaultHeight ? defaultWidth : defaultHeight)
-                    / 2 - mBorderThickness;
-            drawCircleBorder(canvas, radius + mBorderThickness / 2, mBorderOutsideColor);
-        } else {
-            radius = (defaultWidth < defaultHeight ? defaultWidth : defaultHeight) / 2;
-        }
+        int radius;
+        int mBorderOutsideColor = 0;
+        int mBorderInsideColor = 0;
+        radius = (defaultWidth < defaultHeight ? defaultWidth : defaultHeight)
+                / 2 - 2 * mBorderThickness;
+        drawCircleBorder(canvas, radius + mBorderThickness / 2, mBorderInsideColor);
+        drawCircleBorder(canvas, radius + mBorderThickness + mBorderThickness
+                / 2, mBorderOutsideColor);
         Bitmap roundBitmap = getCroppedRoundBitmap(bitmap, radius);
         canvas.drawBitmap(roundBitmap, defaultWidth / 2 - radius, defaultHeight / 2 - radius, null);
     }
@@ -88,11 +71,11 @@ public class CircleImageView extends ImageView {
         int diameter = radius * 2;
         int bmpWidth = bmp.getWidth();
         int bmpHeight = bmp.getHeight();
-        int squareWidth = 0, squareHeight = 0;
-        int x = 0, y = 0;
+        int squareWidth, squareHeight;
+        int x, y;
         Bitmap squareBitmap;
         if (bmpHeight > bmpWidth) {
-            squareWidth = squareHeight = bmpWidth;
+            squareHeight = squareWidth = bmpWidth;
             x = 0;
             y = (bmpHeight - bmpWidth) / 2;
             squareBitmap = Bitmap.createBitmap(bmp, x, y, squareWidth, squareHeight);
@@ -126,9 +109,6 @@ public class CircleImageView extends ImageView {
                 scaledSrcBmp.getWidth() / 2, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(scaledSrcBmp, rect, rect, paint);
-        bmp = null;
-        squareBitmap = null;
-        scaledSrcBmp = null;
         return output;
     }
 

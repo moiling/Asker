@@ -95,4 +95,10 @@ public interface ApiService {
     @POST(Api.API_STAR_QUESTION)
     Observable<ApiWrapper<StarInfo>> starQuestion(@Field("token") String token,
                                                   @Field("questionId") int questionId);
+
+    @FormUrlEncoded
+    @POST(Api.API_LIKE_ANSWER)
+    Observable<ApiWrapper<Integer>> likeAnswer(@Field("token") String token,
+                                               @Field("answerId") int answerId,
+                                               @Field("type") String type);
 }

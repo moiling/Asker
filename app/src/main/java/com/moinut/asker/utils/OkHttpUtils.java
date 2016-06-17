@@ -9,7 +9,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class OkHttpUtils {
-    public static final String TAG = "OkHttpUtils.java";
+    public static final String TAG = OkHttpUtils.class.getName();
 
     private OkHttpUtils() {
         throw new UnsupportedOperationException("OkHttpUtils can't be instantiated");

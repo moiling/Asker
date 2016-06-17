@@ -171,26 +171,39 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         FragmentManager manager = getSupportFragmentManager();
-        if (id == R.id.nav_question) {
-            if (mCurrentFragment != mQuestionFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mQuestionFragment, R.id.content_main);
-            mFab.setVisibility(View.VISIBLE);
-            mToolbar.setTitle(R.string.asker);
-        } else if (id == R.id.nav_stars) {
-            if (mCurrentFragment != mStarFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mStarFragment, R.id.content_main);
-            mFab.setVisibility(View.GONE);
-            mToolbar.setTitle(R.string.star);
-        } else if (id == R.id.nav_me) {
-            if (mCurrentFragment != mMeFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mMeFragment, R.id.content_main);
-            mFab.setVisibility(View.GONE);
-            mToolbar.setTitle(R.string.me);
-        } else if (id == R.id.nav_search) {
-            if (mCurrentFragment != mSearchFragment) FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mSearchFragment, R.id.content_main);
-            mFab.setVisibility(View.GONE);
-            mToolbar.setTitle(R.string.search);
-        } else if (id == R.id.nav_settings) {
-
-        } else if (id == R.id.nav_ask) {
-            ask();
+        switch (id) {
+            case R.id.nav_question:
+                if (mCurrentFragment != mQuestionFragment)
+                    FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mQuestionFragment, R.id.content_main);
+                mFab.setVisibility(View.VISIBLE);
+                mToolbar.setTitle(R.string.asker);
+                break;
+            case R.id.nav_stars:
+                if (mCurrentFragment != mStarFragment)
+                    FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mStarFragment, R.id.content_main);
+                mFab.setVisibility(View.GONE);
+                mToolbar.setTitle(R.string.star);
+                break;
+            case R.id.nav_me:
+                if (mCurrentFragment != mMeFragment)
+                    FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mMeFragment, R.id.content_main);
+                mFab.setVisibility(View.GONE);
+                mToolbar.setTitle(R.string.me);
+                break;
+            case R.id.nav_search:
+                if (mCurrentFragment != mSearchFragment)
+                    FragUtils.startAnotherFragment(manager, mCurrentFragment, mCurrentFragment = mSearchFragment, R.id.content_main);
+                mFab.setVisibility(View.GONE);
+                mToolbar.setTitle(R.string.search);
+                break;
+            //case R.id.nav_settings:
+            //    break;
+            case R.id.nav_about:
+                startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+                break;
+            case R.id.nav_ask:
+                ask();
+                break;
         }
 
         mDrawer.closeDrawer(GravityCompat.START);

@@ -5,21 +5,22 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class TimeUtils {
+
+    public static final String TAG = TimeUtils.class.getName();
 
     public static final int SECOND = 60;
     public static final int HOUR = 3600;
     public static final int DAY = 86400;
     public static final int WEEK = 604800;
 
-    public static final String TAG = TimeUtils.class.getName();
-
     /**
      * 2000-00-00 00:00:00 转 Date
      */
     public static Date strToDate(String strDate) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         ParsePosition position = new ParsePosition(0);
         return format.parse(strDate, position);
     }
@@ -37,36 +38,32 @@ public class TimeUtils {
     public static String getYesterdayDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String yesterday = sdf.format(calendar.getTime());
-        return yesterday;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return sdf.format(calendar.getTime());
     }
 
     /**
      * 得到今天的日期
      */
     public static String getTodayDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date());
-        return date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return sdf.format(new Date());
     }
 
     /**
      * 时间戳转化为时间格式
      */
     public static String timeStampToStr(long timeStamp) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(timeStamp * 1000);
-        return date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return sdf.format(timeStamp * 1000);
     }
 
     /**
      * 得到日期   yyyy-MM-dd
      */
     public static String formatDate(long timeStamp) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sdf.format(timeStamp * 1000);
-        return date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return sdf.format(timeStamp * 1000);
     }
 
     /**
@@ -74,7 +71,7 @@ public class TimeUtils {
      */
     public static String getTime(long timeStamp) {
         String time = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String date = sdf.format(timeStamp * 1000);
         String[] split = date.split("\\s");
         if (split.length > 1) {
@@ -86,7 +83,7 @@ public class TimeUtils {
 
     public static String getTimeDetail(String time) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = null;
         try {
             date = sdf.parse(time);
@@ -116,13 +113,13 @@ public class TimeUtils {
             } else if (delta / TimeUtils.DAY < 2 && new Date().getDay() == date.getDay()) {
                 return delta / TimeUtils.HOUR + "小时前";
             } else if (delta / TimeUtils.DAY < 3 && new Date().getDay() == new Date(date.getTime() + TimeUtils.DAY * 1000).getDay()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 return "昨天 " + sdf.format(date);
             } else if (delta / TimeUtils.DAY < 4 && new Date().getDay() == new Date(date.getTime() + TimeUtils.DAY * 1000 * 2).getDay()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 return "前天 " + sdf.format(date);
             } else {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 return sdf.format(date);
             }
         } else {
@@ -134,13 +131,13 @@ public class TimeUtils {
             } else if (delta / TimeUtils.DAY > -2 && new Date().getDay() == date.getDay()) {
                 return delta / TimeUtils.HOUR + "小时后";
             } else if (delta / TimeUtils.DAY > -3 && new Date().getDay() == new Date(date.getTime() - TimeUtils.DAY).getDay()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 return "明天 " + sdf.format(date);
             } else if (delta / TimeUtils.DAY > -4 && new Date().getDay() == new Date(date.getTime() - TimeUtils.DAY * 2).getDay()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
                 return "后天 " + sdf.format(date);
             } else {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 return sdf.format(date);
             }
         }

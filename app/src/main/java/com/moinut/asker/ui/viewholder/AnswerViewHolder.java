@@ -6,9 +6,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
+import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.model.bean.Answer;
+import com.moinut.asker.model.network.RequestManager;
+import com.moinut.asker.model.subscriber.SimpleSubscriber;
+import com.moinut.asker.model.subscriber.SubscriberListener;
+
+import java.util.Locale;
+
+import retrofit2.adapter.rxjava.HttpException;
 
 public class AnswerViewHolder extends BaseViewHolder<Answer> {
 
@@ -42,7 +50,7 @@ public class AnswerViewHolder extends BaseViewHolder<Answer> {
         }
         content.setText(data.getContent());
         date.setText(data.getDateFormat());
-        likeNumber.setText(data.getLikeNumber() - data.getDislikeNumber() + "");
+        likeNumber.setText(String.format(Locale.getDefault(), "%d", data.getLikeNumber() - data.getDislikeNumber()));
         switch (data.getAuthorType()) {
             case Const.API_STUDENT:
                 authorType.setText(R.string.student);
@@ -57,7 +65,49 @@ public class AnswerViewHolder extends BaseViewHolder<Answer> {
                 authorType.setBackgroundResource(R.drawable.bg_un_know_type);
                 break;
         }
-        like.setOnClickListener(v -> Toast.makeText(v.getContext(), R.string.like, Toast.LENGTH_SHORT).show());
-        dislike.setOnClickListener(v -> Toast.makeText(v.getContext(), R.string.dislike, Toast.LENGTH_SHORT).show());
+        like.setOnClickListener(v -> {
+            if (APP.getUser(getContext()) != null) {
+                RequestManager.getInstance().likeAnswer(new SimpleSubscriber<>(getContext(), new SubscriberListener<Integer>() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        likeNumber.setText(String.format(Locale.getDefault(), "%d", integer));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onLikeError(e);
+                    }
+                }), APP.getUser(getContext()).getToken(), data.getId(), Const.API_LIKE);
+            } else {
+                Toast.makeText(getContext(), R.string.please_login, Toast.LENGTH_SHORT).show();
+            }
+        });
+        dislike.setOnClickListener(v -> {
+            if (APP.getUser(getContext()) != null) {
+                RequestManager.getInstance().likeAnswer(new SimpleSubscriber<>(getContext(), new SubscriberListener<Integer>() {
+                    @Override
+                    public void onNext(Integer integer) {
+                        likeNumber.setText(String.format(Locale.getDefault(), "%d", integer));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onLikeError(e);
+                    }
+                }), APP.getUser(getContext()).getToken(), data.getId(), Const.API_DISLIKE);
+            } else {
+                Toast.makeText(getContext(), R.string.please_login, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onLikeError(Throwable e) {
+        e.printStackTrace();
+        if (e instanceof HttpException) {
+            if (((HttpException) e).code() == 401) {
+                Toast.makeText(getContext(), R.string.token_out_date_login_again, Toast.LENGTH_SHORT).show();
+            }
+        }
+        // 其他不想处理……
     }
 }

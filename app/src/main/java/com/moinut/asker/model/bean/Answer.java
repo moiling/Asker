@@ -1,17 +1,5 @@
 package com.moinut.asker.model.bean;
 
-/*
-"id": 1,
-"contentId": 1,
-"date": "2016-06-13 16:40:13",
-"questionId": 83,
-"likeNumber": 0,
-"dislikeNumber": 0,
-"authorName": "Teacher",
-"authorType": "teacher",
-"content": "我不管，你自己好好完成！"
-*/
-
 import com.moinut.asker.utils.TimeUtils;
 
 public class Answer {

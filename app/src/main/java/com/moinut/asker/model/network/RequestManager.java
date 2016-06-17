@@ -193,4 +193,10 @@ public enum RequestManager {
                 .map(new ApiWrapperFunc<>());
         return emitObservable(observable, subscriber);
     }
+
+    public Subscription likeAnswer(Subscriber<Integer> subscriber, String token, int answerId, String type) {
+        Observable<Integer> observable = mApiService.likeAnswer(token, answerId, type)
+                .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
 }

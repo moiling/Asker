@@ -93,5 +93,7 @@
     <string name="wrong_password">密码输入错误</string>
     <string name="network_break">网络中断，请检查您的网络状态</string>
     <string name="network_connect_error">网络异常，请检查您的网络状态</string>
+    <string name="recent">最新</string>
+    <string name="about">关于</string>
 
 </resources>

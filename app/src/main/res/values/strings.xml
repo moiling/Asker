@@ -93,8 +93,7 @@
     <string name="wrong_password">Your password is wrong.</string>
     <string name="network_break">Network error.</string>
     <string name="network_connect_error">Network connect error.</string>
-    <string name="just_now">刚刚</string>
-    <string name="minute_before">分钟前</string>
-    <string name="hour_before">小时前</string>
+    <string name="recent">Recent</string>
+    <string name="about">About</string>
 
 </resources>

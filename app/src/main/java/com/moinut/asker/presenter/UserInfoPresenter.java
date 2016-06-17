@@ -39,7 +39,7 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
             RequestManager.getInstance().updateStudentInfo(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
                 @Override
                 public void onError(Throwable e) {
-                    doError(e);
+                    doUpdateError(e);
                 }
 
                 @Override
@@ -66,7 +66,7 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
             RequestManager.getInstance().updateTeacherInfo(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
                 @Override
                 public void onError(Throwable e) {
-                    doError(e);
+                    doUpdateError(e);
                 }
 
                 @Override
@@ -92,7 +92,7 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        doError(e);
+                        doGetError(e);
                     }
                 }), token);
                 return;
@@ -107,14 +107,14 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        doError(e);
+                        doGetError(e);
                     }
                 }), token);
             }
         }
     }
 
-    private void doError(Throwable e) {
+    private void doGetError(Throwable e) {
         e.printStackTrace();
         if (v != null) {
             if (e instanceof HttpException) {
@@ -125,6 +125,21 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
                 }
             } else {
                 v.onGetError(e.toString());
+            }
+        }
+    }
+
+    private void doUpdateError(Throwable e) {
+        e.printStackTrace();
+        if (v != null) {
+            if (e instanceof HttpException) {
+                if (((HttpException) e).code() == 401) {
+                    v.onUpdateError(context.getString(R.string.token_out_date_login_again));
+                } else {
+                    v.onUpdateError(((HttpException) e).message());
+                }
+            } else {
+                v.onUpdateError(e.toString());
             }
         }
     }

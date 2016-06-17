@@ -72,10 +72,8 @@ public class ScreenUtils {
         try {
             method.invoke(view, false);
             view.setPadding(0, 0, 0, getNavigationBarHeight(view.getContext()));
-        } catch (IllegalAccessException e) {
-            return;
-        } catch (InvocationTargetException e) {
-            return;
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
     }
 
@@ -91,10 +89,8 @@ public class ScreenUtils {
         try {
             method.invoke(view, false);
             view.setPadding(0, 0, 0, getNavigationBarHeight(view.getContext()) + getStatusBarHeight(view.getContext()));
-        } catch (IllegalAccessException e) {
-            return;
-        } catch (InvocationTargetException e) {
-            return;
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
     }
 }

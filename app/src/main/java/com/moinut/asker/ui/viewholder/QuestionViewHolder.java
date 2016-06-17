@@ -17,6 +17,8 @@ import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
 import com.moinut.asker.model.subscriber.SubscriberListener;
 
+import java.util.Locale;
+
 import retrofit2.adapter.rxjava.HttpException;
 
 public class QuestionViewHolder extends BaseViewHolder<Question> {
@@ -56,8 +58,8 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
         }
         date.setText(data.getDateFormat());
         type.setText(data.getType());
-        answerCount.setText(data.getAnswerCount() + "");
-        starCount.setText(data.getStarCount() + "");
+        answerCount.setText(String.format(Locale.getDefault(), "%d", data.getAnswerCount()));
+        starCount.setText(String.format(Locale.getDefault(), "%d", data.getStarCount()));
         star.setOnClickListener(v -> {
             if (APP.getUser(getContext()) != null) {
                 RequestManager.getInstance().starQuestion(new SimpleSubscriber<>(getContext(), new SubscriberListener<StarInfo>() {
@@ -65,7 +67,7 @@ public class QuestionViewHolder extends BaseViewHolder<Question> {
                     public void onNext(StarInfo starInfo) {
                         starImage.setColorFilter(starInfo.getType().equals(Const.API_STAR) ? ContextCompat.getColor(getContext(), R.color.colorAccent)
                                 : ContextCompat.getColor(getContext(), R.color.iconGrey));
-                        starCount.setText(starInfo.getCount() + "");
+                        starCount.setText(String.format(Locale.getDefault(), "%d", starInfo.getCount()));
                     }
 
                     @Override
