@@ -19,6 +19,8 @@ import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
 import com.moinut.asker.model.subscriber.SubscriberListener;
 
+import java.util.Locale;
+
 import retrofit2.adapter.rxjava.HttpException;
 
 import static com.moinut.asker.APP.getContext;
@@ -58,8 +60,8 @@ public class QuestionHeader implements RecyclerArrayAdapter.ItemView {
         }
         date.setText(mQuestion.getDateFormat());
         type.setText(mQuestion.getType());
-        answerCount.setText(mQuestion.getAnswerCount() + "");
-        starCount.setText(mQuestion.getStarCount() + "");
+        answerCount.setText(String.format(Locale.getDefault(), "%d", mQuestion.getAnswerCount()));
+        starCount.setText(String.format(Locale.getDefault(), "%d", mQuestion.getStarCount()));
         star.setOnClickListener(v -> {
             if (APP.getUser(getContext()) != null) {
                 RequestManager.getInstance().starQuestion(new SimpleSubscriber<>(getContext(), new SubscriberListener<StarInfo>() {
@@ -67,7 +69,7 @@ public class QuestionHeader implements RecyclerArrayAdapter.ItemView {
                     public void onNext(StarInfo starInfo) {
                         starImage.setColorFilter(starInfo.getType().equals(Const.API_STAR) ? ContextCompat.getColor(getContext(), R.color.colorAccent)
                                 : ContextCompat.getColor(getContext(), R.color.iconGrey));
-                        starCount.setText(starInfo.getCount() + "");
+                        starCount.setText(String.format(Locale.getDefault(), "%d", starInfo.getCount()));
                     }
 
                     @Override

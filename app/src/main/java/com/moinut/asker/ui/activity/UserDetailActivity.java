@@ -23,6 +23,7 @@ import com.moinut.asker.ui.vu.IUserInfoView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -125,7 +126,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         mEditEmail.setText(student.getEmail());
         mEditTel.setText(student.getTel());
         mEditMajor.setText(student.getMajor());
-        if (student.getYear() != 0) mEditYear.setText(student.getYear() + "");
+        if (student.getYear() != 0) mEditYear.setText(String.format(Locale.getDefault(), "%d", student.getYear()));
         if (student.getSex() != null && student.getSex().equals(Const.API_FEMALE)) {
             mRbSexFemale.setChecked(true);
         } else {
@@ -191,7 +192,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             if (!nickName.isEmpty()) student.setNickName(nickName);
             student.setSex(mRbSexFemale.isChecked() ? Const.API_FEMALE : Const.API_MALE);
             if (!tel.isEmpty()) student.setTel(tel);
-            Pattern pattern = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches() && !email.isEmpty()) {
                 mEditEmail.setError(getString(R.string.wrong_email));

@@ -30,7 +30,7 @@ public class AppUtils {
     /**
      * [获取应用程序版本名称信息]
      *
-     * @param context
+     * @param context context
      * @return 当前应用的版本名称
      */
     public static String getVersionName(Context context) {
