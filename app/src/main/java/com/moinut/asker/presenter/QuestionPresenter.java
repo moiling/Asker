@@ -28,107 +28,29 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
 
     public void onAllQuestionsRefresh(String token) {
         page = 0;
-        RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
-            @Override
-            public void onNext(List<Question> questions) {
-                super.onNext(questions);
-                if (v != null) {
-                    v.onRefreshEnd(questions);
-                    page++;
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-                doError(e);
-            }
-        }), page, count, token);
+        RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new QuestionRefreshListener()), page, count, token);
     }
 
     public void onAllQuestionsLoadMore(String token) {
-        RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
-            @Override
-            public void onNext(List<Question> questions) {
-                super.onNext(questions);
-                if (v != null) {
-                    v.onLoadMoreEnd(questions);
-                    page++;
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-                doError(e);
-            }
-        }), page, count, token);
+        RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new QuestionLoadListener()), page, count, token);
     }
 
     public void onStarQuestionsRefresh(String token) {
         page = 0;
-        RequestManager.getInstance().getStarQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
-            @Override
-            public void onNext(List<Question> questions) {
-                super.onNext(questions);
-                if (v != null) {
-                    v.onRefreshEnd(questions);
-                    page++;
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-                doError(e);
-            }
-        }), page, count, token);
+        RequestManager.getInstance().getStarQuestions(new SimpleSubscriber<>(getContext(), new QuestionRefreshListener()), page, count, token);
     }
 
     public void onStarQuestionsLoadMore(String token) {
-        RequestManager.getInstance().getStarQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
-            @Override
-            public void onNext(List<Question> questions) {
-                super.onNext(questions);
-                if (v != null) {
-                    v.onLoadMoreEnd(questions);
-                    page++;
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-                doError(e);
-            }
-        }), page, count, token);
+        RequestManager.getInstance().getStarQuestions(new SimpleSubscriber<>(getContext(), new QuestionLoadListener()), page, count, token);
     }
 
     public void onMyQuestionsRefresh(String token) {
         page = 0;
-        RequestManager.getInstance().getMyQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
-            @Override
-            public void onNext(List<Question> questions) {
-                super.onNext(questions);
-                if (v != null) {
-                    v.onRefreshEnd(questions);
-                    page++;
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-                doError(e);
-            }
-        }), page, count, token);
+        RequestManager.getInstance().getMyQuestions(new SimpleSubscriber<>(getContext(), new QuestionRefreshListener()), page, count, token);
     }
 
     public void onMyQuestionsLoadMore(String token) {
-        RequestManager.getInstance().getMyQuestions(new SimpleSubscriber<>(getContext(), new SubscriberListener<List<Question>>() {
-            @Override
-            public void onNext(List<Question> questions) {
-                super.onNext(questions);
-                if (v != null) {
-                    v.onLoadMoreEnd(questions);
-                    page++;
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-                doError(e);
-            }
-        }), page, count, token);
+        RequestManager.getInstance().getMyQuestions(new SimpleSubscriber<>(getContext(), new QuestionLoadListener()), page, count, token);
     }
 
     private void doError(Throwable e) {
@@ -140,5 +62,35 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
             }
         }
         // 其他错误不处理
+    }
+
+    private class QuestionLoadListener extends SubscriberListener<List<Question>> {
+        @Override
+        public void onNext(List<Question> questions) {
+            super.onNext(questions);
+            if (v != null) {
+                v.onLoadMoreEnd(questions);
+                page++;
+            }
+        }
+        @Override
+        public void onError(Throwable e) {
+            doError(e);
+        }
+    }
+
+    private class QuestionRefreshListener extends SubscriberListener<List<Question>> {
+        @Override
+        public void onNext(List<Question> questions) {
+            super.onNext(questions);
+            if (v != null) {
+                v.onRefreshEnd(questions);
+                page++;
+            }
+        }
+        @Override
+        public void onError(Throwable e) {
+            doError(e);
+        }
     }
 }
