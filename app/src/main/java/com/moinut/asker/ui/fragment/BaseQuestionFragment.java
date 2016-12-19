@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,14 +43,14 @@ public abstract class BaseQuestionFragment extends BaseFragment implements
         SwipeRefreshLayout.OnRefreshListener,
         IQuestionView {
 
-    public static final String TAG = BaseQuestionFragment.class.getName();
+    public static final String TAG = BaseQuestionFragment.class.getSimpleName();
 
     @Bind(R.id.rv_questions)
     EasyRecyclerView mRecyclerView;
 
-    private float mFabBottom;
-    private QuestionAdapter mAdapter;
-    private QuestionPresenter mQuestionPresenter;
+    protected float mFabBottom;
+    protected QuestionAdapter mAdapter;
+    protected QuestionPresenter mQuestionPresenter;
 
     public BaseQuestionFragment() {
         // Required empty public constructor
@@ -76,12 +77,20 @@ public abstract class BaseQuestionFragment extends BaseFragment implements
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ScreenUtils.paddingToNavigationBar(mRecyclerView.getRecyclerView());
+
+        ScreenUtils.paddingToToolbarAndNavigationBar(mRecyclerView.getRecyclerView());
+        mRecyclerView.getSwipeToRefresh().setProgressViewOffset(true, 0,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 72, getResources().getDisplayMetrics()));
+
         mRecyclerView.setAdapterWithProgress(mAdapter);
         mRecyclerView.setRefreshListener(this);
         mRecyclerView.setRefreshingColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
 
-        AnimationUtils.hideFabInRecyclerView(mRecyclerView.getRecyclerView(), ((MainActivity) getActivity()).getFab());
+        if (getActivity() instanceof MainActivity) {
+            AnimationUtils.hideFabAndAppBarInRecyclerView(mRecyclerView.getRecyclerView(),
+                    ((MainActivity) getActivity()).getFab(),
+                    ((MainActivity)getActivity()).getAppBar());
+        }
 
         mAdapter.setOnItemClickListener(position -> {
             Intent intent = new Intent(getContext(), AnswerActivity.class);

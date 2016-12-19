@@ -24,14 +24,19 @@ public class MeFragment extends BaseQuestionFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView.setEmptyView(R.layout.view_question_un_login);
         mRecyclerView.getEmptyView().findViewById(R.id.tv_need_login).setOnClickListener(v -> startActivity(new Intent(getContext(), LoginActivity.class)));
+
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
     public void onRefresh() {
         if (APP.getUser(getContext()) != null) {
+            mRecyclerView.getEmptyView().findViewById(R.id.tv_need_login).setVisibility(View.GONE);
+            mRecyclerView.getEmptyView().findViewById(R.id.tv_none).setVisibility(View.VISIBLE);
             getQuestionPresenter().onMyQuestionsRefresh(APP.getUser(getContext()).getToken());
         } else {
+            mRecyclerView.getEmptyView().findViewById(R.id.tv_need_login).setVisibility(View.VISIBLE);
+            mRecyclerView.getEmptyView().findViewById(R.id.tv_none).setVisibility(View.GONE);
             mRecyclerView.showEmpty();
         }
     }

@@ -1,14 +1,20 @@
 package com.moinut.asker.ui.activity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.ViewStubCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moinut.asker.APP;
@@ -17,9 +23,17 @@ import com.moinut.asker.config.Const;
 import com.moinut.asker.event.ExitEvent;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
+import com.moinut.asker.model.bean.UploadWrapper;
 import com.moinut.asker.model.bean.User;
+import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.presenter.UserInfoPresenter;
+import com.moinut.asker.ui.component.widget.CircleImageView;
 import com.moinut.asker.ui.vu.IUserInfoView;
+import com.moinut.asker.utils.ToolbarUtils;
+import com.moinut.picrop.CropIntent;
+import com.moinut.picrop.PiCrop;
+import com.moinut.picrop.callback.OnCropListener;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,9 +43,12 @@ import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscriber;
 
 @SuppressWarnings("WeakerAccess")
 public class UserDetailActivity extends BaseActivity implements IUserInfoView {
+
+    public static final String TAG = UserDetailActivity.class.getSimpleName();
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -53,6 +70,8 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     ViewStubCompat mStudentViewStub;
     @Bind(R.id.view_stub_teacher_info)
     ViewStubCompat mTeacherViewStub;
+    @Bind(R.id.iv_edit_portrait)
+    CircleImageView mEditPortrait;
 
     // Student
     private EditText mEditYear;
@@ -66,11 +85,14 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     private String mToken;
     private UserInfoPresenter mUserInfoPresenter;
 
+    private PiCrop mPiCrop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         ButterKnife.bind(this);
+        mPiCrop = new PiCrop(this);
         getType();
         initView();
         mUserInfoPresenter.get(mToken);
@@ -95,11 +117,64 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
 
     private void initView() {
         initToolbar();
+
         mBtnExit.setOnClickListener(v -> {
             APP.exitUser(this);
             EventBus.getDefault().post(new ExitEvent());
             finish();
         });
+
+
+        mEditPortrait.setOnClickListener(v -> {
+
+            mPiCrop.setCropIntent(new CropIntent.Builder()
+                    .setSaveUri(Uri.parse("file://"
+                            + this.getExternalFilesDir(null).getPath()
+                            + "/"
+                            + System.currentTimeMillis()
+                            + APP.getUser(this).getId()
+                            + ".jpg")));
+
+            RxPermissions rxPermissions = new RxPermissions(this);
+            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(granted -> {
+                        if (granted) {
+                            // All requested permissions are granted
+                            mPiCrop.get(PiCrop.FROM_ALBUM, new OnCropListener() {
+                                @Override
+                                public void onStart() {
+                                    // When PiCrop start working. You can do something like show a progressbar.
+                                }
+
+                                @Override
+                                public void onSuccess(Uri picUri) {
+                                    RequestManager.getInstance().upload(new Subscriber<UploadWrapper>() {
+                                        @Override
+                                        public void onCompleted() { }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        @Override
+                                        public void onNext(UploadWrapper uploadWrapper) {
+                                            Log.i(TAG, "onNext: " + uploadWrapper.toString());
+                                        }
+                                    }, picUri);
+                                }
+
+                                @Override
+                                public void onError(String errorMsg) {
+                                    Log.e(TAG, "onError: " + errorMsg);
+                                }
+                            });
+                        } else {
+                            // At least one permission is denied
+                        }
+                    });
+        });
+
         if (mUserInfoPresenter.getUserType().equals(Const.API_STUDENT)) {
             mStudentViewStub.inflate();
             mEditYear = (EditText) findViewById(R.id.edit_year);
@@ -108,6 +183,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             mTeacherViewStub.inflate();
             mEditRealName = (EditText) findViewById(R.id.edit_real_name);
         }
+
         mEditCollege = (EditText) findViewById(R.id.edit_college);
         mEditAcademy = (EditText) findViewById(R.id.edit_academy);
     }
@@ -115,6 +191,9 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     private void initToolbar() {
         mToolbar.setTitle(R.string.detail);
         setSupportActionBar(mToolbar);
+        TextView title = ToolbarUtils.getToolbarTitleView(this, mToolbar);
+        if (title != null)
+            title.setTypeface(Typeface.SERIF);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
     }
@@ -126,7 +205,9 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         mEditEmail.setText(student.getEmail());
         mEditTel.setText(student.getTel());
         mEditMajor.setText(student.getMajor());
-        if (student.getYear() != 0) mEditYear.setText(String.format(Locale.getDefault(), "%d", student.getYear()));
+
+        if (student.getYear() != 0)
+            mEditYear.setText(String.format(Locale.getDefault(), "%d", student.getYear()));
         if (student.getSex() != null && student.getSex().equals(Const.API_FEMALE)) {
             mRbSexFemale.setChecked(true);
         } else {
@@ -141,6 +222,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         mEditEmail.setText(teacher.getEmail());
         mEditTel.setText(teacher.getTel());
         mEditRealName.setText(teacher.getRealName());
+
         if (teacher.getSex() != null && teacher.getSex().equals(Const.API_FEMALE)) {
             mRbSexFemale.setChecked(true);
         } else {
@@ -171,7 +253,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             Student student;
             try {
                 if (mUserInfoPresenter.getUser() != null) {
-                    student = (Student) ((Student) mUserInfoPresenter.getUser()).clone();
+                    student = (Student) mUserInfoPresenter.getUser().clone();
                 } else {
                     student = new Student();
                     student.setUser(APP.getUser(this));
@@ -217,7 +299,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             Teacher teacher;
             try {
                 if (mUserInfoPresenter.getUser() != null) {
-                    teacher = (Teacher) ((Teacher) mUserInfoPresenter.getUser()).clone();
+                    teacher = (Teacher) mUserInfoPresenter.getUser().clone();
                 } else {
                     teacher = new Teacher();
                     teacher.setUser(APP.getUser(this));
@@ -237,7 +319,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
             if (!nickName.isEmpty()) teacher.setNickName(nickName);
             teacher.setSex(mRbSexFemale.isChecked() ? Const.API_FEMALE : Const.API_MALE);
             if (!tel.isEmpty()) teacher.setTel(tel);
-            Pattern pattern = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$",Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(email);
             if (!matcher.matches()) {
                 mEditEmail.setError(getString(R.string.wrong_email));
@@ -290,4 +372,9 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         showProgress(getString(R.string.updating_info));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPiCrop.onActivityResult(requestCode, resultCode, data);
+    }
 }

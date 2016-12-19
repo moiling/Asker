@@ -77,6 +77,25 @@ public class ScreenUtils {
         }
     }
 
+    public static void paddingToToolbarAndNavigationBar(View view) {
+        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT))
+            return;
+        Method method;
+        try {
+            method = view.getClass().getMethod("setClipToPadding", boolean.class);
+        } catch (NoSuchMethodException e) {
+            return;
+        }
+        try {
+            method.invoke(view, false);
+            if (hasSoftKeys(view.getContext()))
+                view.setPadding(0, DensityUtils.dp2px(view.getContext(), 56.0f), 0, getNavigationBarHeight(view.getContext()));
+            else view.setPadding(0, DensityUtils.dp2px(view.getContext(), 56.0f), 0, 0);
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
+        }
+    }
+
     public static void paddingToNavigationBarWithStatusBar(View view) {
         if (!hasSoftKeys(view.getContext()) || !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT))
             return;

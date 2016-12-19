@@ -110,6 +110,14 @@ public enum RequestManager {
 
     // ------------------------------------------------------------------
 
+    public Subscription upload(Subscriber<UploadWrapper> subscriber, Uri fileUri) {
+        Observable<UploadWrapper> observable = mApiService.upload(
+                Api.END_POINT_MOINUT + Api.API_UPLOAD,
+                OkHttpUtils.createFileRequestBody("file", fileUri)
+        );
+        return emitObservable(observable, subscriber);
+    }
+
     public Subscription login(Subscriber<ApiWrapper<User>> subscriber, String accountId, String password) {
         Observable<ApiWrapper<User>> observable = mApiService.login(accountId, password);
         return emitObservable(observable, subscriber);
@@ -118,6 +126,12 @@ public enum RequestManager {
     public Subscription register(Subscriber<String> subscriber, String accountId, String password, String type) {
         Observable<String> observable = mApiService.register(accountId, password, type)
                 .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
+    public Subscription searchAllQuestions(Subscriber<List<Question>> subscriber, int page, int count, String token, String search) {
+        Observable<List<Question>> observable = mApiService.searchAllQuestions(page, count, token, search)
+                .map(new PageWrapperFunc<>());
         return emitObservable(observable, subscriber);
     }
 

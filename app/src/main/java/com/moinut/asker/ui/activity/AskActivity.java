@@ -1,16 +1,19 @@
 package com.moinut.asker.ui.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.presenter.AskPresenter;
 import com.moinut.asker.ui.vu.IAskView;
+import com.moinut.asker.utils.ToolbarUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,6 +54,9 @@ public class AskActivity extends BaseActivity implements IAskView {
 
     private void initToolbar() {
         setSupportActionBar(mToolbar);
+        TextView title = ToolbarUtils.getToolbarTitleView(this, mToolbar);
+        if (title != null)
+            title.setTypeface(Typeface.SERIF);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
     }

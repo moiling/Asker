@@ -1,10 +1,12 @@
 package com.moinut.asker.ui.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.moinut.asker.APP;
@@ -12,6 +14,7 @@ import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.presenter.DoAnswerPresenter;
 import com.moinut.asker.ui.vu.IDoAnswerView;
+import com.moinut.asker.utils.ToolbarUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,6 +52,9 @@ public class DoAnswerActivity extends BaseActivity implements IDoAnswerView {
     private void initToolbar() {
         mToolbar.setTitle(R.string.answer);
         setSupportActionBar(mToolbar);
+        TextView title = ToolbarUtils.getToolbarTitleView(this, mToolbar);
+        if (title != null)
+            title.setTypeface(Typeface.SERIF);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
     }

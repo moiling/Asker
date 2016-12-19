@@ -6,20 +6,42 @@
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_user_detail">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.moinut.asker.ui.component.widget.CircleImageView
+            android:id="@+id/iv_edit_portrait"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_centerInParent="true"
+            android:layout_width="126dp"
+            android:layout_height="126dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test" />
+
+    </RelativeLayout>
+
     <TextView
-        android:padding="16dp"
+        android:padding="24dp"
         android:text="@string/base_info"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/primary_text"
         android:textSize="16sp"
+        android:typeface="serif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/div"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:minHeight="48dp"
         android:orientation="horizontal">
 
@@ -39,7 +61,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:background="@null"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:inputType="text"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
@@ -56,8 +78,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:minHeight="48dp"
         android:orientation="horizontal">
 
@@ -75,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatRadioButton
@@ -114,8 +136,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:minHeight="48dp"
         android:orientation="horizontal">
 
@@ -135,7 +157,7 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:background="@null"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:inputType="text"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
@@ -152,8 +174,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         android:minHeight="48dp"
         android:orientation="horizontal">
 
@@ -173,12 +195,17 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:background="@null"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:inputType="textEmailAddress"
             android:textColor="@color/primary_text"
             android:textSize="16sp"
             tools:text="super8moi@gmail.com" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/div"/>
 
 </merge>

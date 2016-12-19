@@ -8,22 +8,42 @@ import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.model.bean.StarInfo;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
+import com.moinut.asker.model.bean.UploadWrapper;
 import com.moinut.asker.model.bean.User;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Url;
 import rx.Observable;
 
 public interface ApiService {
+
+    @Multipart
+    @POST
+    Observable<UploadWrapper> upload(@Url String url,
+                                     @Part MultipartBody.Part file
+    );
 
     @FormUrlEncoded
     @POST(Api.API_LOGIN)
     Observable<ApiWrapper<User>> login(
             @Field("accountId") String accountId,
             @Field("password") String password
+    );
+
+    @FormUrlEncoded
+    @POST(Api.API_SEARCH_ALL_QUESTIONS)
+    Observable<PageWrapper<List<Question>>> searchAllQuestions(
+            @Field("page") int page,
+            @Field("count") int count,
+            @Field("token") String token,
+            @Field("search") String search
     );
 
     @FormUrlEncoded

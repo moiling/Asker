@@ -13,12 +13,12 @@
     <string name="exit">EXIT</string>
     <string name="title_activity_answer">AnswerActivity</string>
     <string name="action_sign_in_short">sign</string>
-    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in">Sign in OR Register</string>
     <string name="question_need_login">Need login. Click to login.</string>
     <string name="question_no_more">(*￣ω￣) Don\'t have any more.</string>
     <string name="question_more">Loading…</string>
     <string name="question_error">Network error, click to retry.</string>
-    <string name="base_info">Base Information</string>
+    <string name="base_info">Base Info</string>
     <string name="nick_name">Name</string>
     <string name="un_edit">Didn\'t edit.</string>
     <string name="sex">Sex</string>
@@ -26,11 +26,11 @@
     <string name="female">Female</string>
     <string name="tel">Phone</string>
     <string name="email">Email</string>
-    <string name="teacher_info">Teacher Information</string>
+    <string name="teacher_info">Teacher Info</string>
     <string name="college">College</string>
     <string name="academy">Academy</string>
     <string name="name">Name</string>
-    <string name="student_info">Student Information</string>
+    <string name="student_info">Student Info</string>
     <string name="grade">Grade</string>
     <string name="un_edit_year">Didn\'t edit (eg: 2014)</string>
     <string name="major">Major</string>
@@ -95,5 +95,8 @@
     <string name="network_connect_error">Network connect error.</string>
     <string name="recent">Recent</string>
     <string name="about">About</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="password_must_same">Not the same password.</string>
+    <string name="question_no">No Questions.</string>
 
 </resources>

@@ -4,14 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="12dp"
     android:clickable="true"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+    app:cardCornerRadius="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,6 +44,7 @@
                 android:textSize="18sp"
                 android:maxLines="1"
                 android:textColor="@color/primary_text"
+                android:typeface="serif"
                 tools:text="这是一个标题" />
 
         </LinearLayout>

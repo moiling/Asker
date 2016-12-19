@@ -47,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/account_id"
                     android:inputType="text"
+                    android:typeface="serif"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
@@ -60,6 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
+                    android:typeface="serif"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
@@ -74,6 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:typeface="serif"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 

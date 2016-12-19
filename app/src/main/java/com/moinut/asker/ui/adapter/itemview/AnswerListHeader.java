@@ -25,17 +25,17 @@ import retrofit2.adapter.rxjava.HttpException;
 
 import static com.moinut.asker.APP.getContext;
 
-public class QuestionHeader implements RecyclerArrayAdapter.ItemView {
+public class AnswerListHeader implements RecyclerArrayAdapter.ItemView {
 
     private Question mQuestion;
 
-    public QuestionHeader(Question question) {
+    public AnswerListHeader(Question question) {
         mQuestion = question;
     }
 
     @Override
     public View onCreateView(ViewGroup parent) {
-        return LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_question, parent, false);
+        return LayoutInflater.from(parent.getContext()).inflate(R.layout.view_header_answer_list, parent, false);
     }
 
     @Override

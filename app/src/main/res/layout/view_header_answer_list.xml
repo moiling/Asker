@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="0dp"
+    app:cardElevation="2dp"
     android:clickable="true">
 
     <RelativeLayout
@@ -42,6 +43,7 @@
                 android:textSize="18sp"
                 android:maxLines="1"
                 android:textColor="@color/primary_text"
+                android:typeface="serif"
                 tools:text="这是一个标题" />
 
         </LinearLayout>

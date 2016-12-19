@@ -10,6 +10,8 @@
     <!--android:layout_height="match_parent"-->
     <!--tools:context="com.moinut.asker.ui.activity.MainActivity">-->
 
+    <include layout="@layout/layout_content_main" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,8 +30,6 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.AppBarLayout>
-
-        <include layout="@layout/layout_content_main" />
 
     </RelativeLayout>
 

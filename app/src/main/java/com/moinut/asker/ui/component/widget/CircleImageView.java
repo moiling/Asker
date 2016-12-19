@@ -3,6 +3,7 @@ package com.moinut.asker.ui.component.widget;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -12,6 +13,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.moinut.asker.utils.DensityUtils;
 
 public class CircleImageView extends ImageView {
     private int mBorderThickness = 0;
@@ -56,7 +59,8 @@ public class CircleImageView extends ImageView {
 
         int radius;
         int mBorderOutsideColor = 0;
-        int mBorderInsideColor = 0;
+        int mBorderInsideColor = Color.WHITE;
+        mBorderThickness = DensityUtils.dp2px(this.getContext(), 2.0f);
         radius = (defaultWidth < defaultHeight ? defaultWidth : defaultHeight)
                 / 2 - 2 * mBorderThickness;
         drawCircleBorder(canvas, radius + mBorderThickness / 2, mBorderInsideColor);

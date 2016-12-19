@@ -1,12 +1,14 @@
 package com.moinut.asker.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
@@ -17,10 +19,11 @@ import com.moinut.asker.model.bean.Answer;
 import com.moinut.asker.model.bean.Question;
 import com.moinut.asker.presenter.AnswerPresenter;
 import com.moinut.asker.ui.adapter.AnswerAdapter;
-import com.moinut.asker.ui.adapter.itemview.QuestionHeader;
+import com.moinut.asker.ui.adapter.itemview.AnswerListHeader;
 import com.moinut.asker.ui.vu.IAnswerView;
 import com.moinut.asker.utils.AnimationUtils;
 import com.moinut.asker.utils.ScreenUtils;
+import com.moinut.asker.utils.ToolbarUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -99,12 +102,15 @@ public class AnswerActivity extends BaseActivity implements
         mAdapter.setMore(R.layout.view_question_more, this);
         mAdapter.setNoMore(R.layout.view_question_nomore);
         mAdapter.setError(R.layout.view_question_empty).setOnClickListener(v -> mAdapter.resumeMore());
-        mAdapter.addHeader(new QuestionHeader(mQuestion));
+        mAdapter.addHeader(new AnswerListHeader(mQuestion));
     }
 
     private void initToolbar() {
         mToolbar.setTitle(R.string.answer);
         setSupportActionBar(mToolbar);
+        TextView title = ToolbarUtils.getToolbarTitleView(this, mToolbar);
+        if (title != null)
+            title.setTypeface(Typeface.SERIF);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
     }

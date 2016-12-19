@@ -13,7 +13,7 @@
     <string name="exit">退出</string>
     <string name="title_activity_answer">AnswerActivity</string>
     <string name="action_sign_in_short">sign</string>
-    <string name="action_sign_in">登录</string>
+    <string name="action_sign_in">登录或注册</string>
     <string name="question_need_login">需要登录之后才能查看, 点击登录</string>
     <string name="question_no_more">(*￣ω￣) 没有更多了</string>
     <string name="question_more">更多加载中……</string>
@@ -95,5 +95,8 @@
     <string name="network_connect_error">网络异常，请检查您的网络状态</string>
     <string name="recent">最新</string>
     <string name="about">关于</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="password_must_same">密码不相同</string>
+    <string name="question_no">没有任何提问信息</string>
 
 </resources>

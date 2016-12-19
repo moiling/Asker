@@ -26,6 +26,10 @@ public class QuestionPresenter extends BasePresenter<IQuestionView> {
         super(context, v);
     }
 
+    public void searchAllQuestions(String search, String token) {
+        RequestManager.getInstance().searchAllQuestions(new SimpleSubscriber<>(getContext(), new QuestionRefreshListener()), 0, count, token, search);
+    }
+
     public void onAllQuestionsRefresh(String token) {
         page = 0;
         RequestManager.getInstance().getAllQuestions(new SimpleSubscriber<>(getContext(), new QuestionRefreshListener()), page, count, token);

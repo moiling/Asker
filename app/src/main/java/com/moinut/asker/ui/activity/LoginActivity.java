@@ -1,9 +1,11 @@
 package com.moinut.asker.ui.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.moinut.asker.R;
@@ -13,6 +15,7 @@ import com.moinut.asker.presenter.LoginPresenter;
 import com.moinut.asker.presenter.RegisterPresenter;
 import com.moinut.asker.ui.vu.ILoginView;
 import com.moinut.asker.ui.vu.IRegisterView;
+import com.moinut.asker.utils.ToolbarUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,6 +60,9 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     private void initToolbar() {
         mToolbar.setTitle(R.string.login);
         setSupportActionBar(mToolbar);
+        TextView title = ToolbarUtils.getToolbarTitleView(this, mToolbar);
+        if (title != null)
+            title.setTypeface(Typeface.SERIF);
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         mToolbar.setNavigationOnClickListener(v -> finish());
     }

@@ -1,7 +1,9 @@
 package com.moinut.asker.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import com.moinut.asker.ui.fragment.QuestionFragment;
 import com.moinut.asker.ui.fragment.SearchFragment;
 import com.moinut.asker.ui.fragment.StarFragment;
 import com.moinut.asker.utils.FragUtils;
+import com.moinut.asker.utils.ToolbarUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,8 +47,11 @@ public class MainActivity extends BaseActivity
     DrawerLayout mDrawer;
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
+    @Bind(R.id.app_bar)
+    AppBarLayout mAppBar;
 
     private TextView mUserName;
+    private ImageView mUserPortrait;
     private SearchView mSearchView;
 
     private User mUser;
@@ -69,7 +76,11 @@ public class MainActivity extends BaseActivity
         mStarFragment = new StarFragment();
         mSearchFragment = new SearchFragment();
 
-        FragUtils.addFragmentToActivity(getSupportFragmentManager(), mCurrentFragment = mQuestionFragment, R.id.content_main);
+        if (!mQuestionFragment.isAdded()) {
+            FragUtils.addFragmentToActivity(getSupportFragmentManager(), mCurrentFragment = mQuestionFragment, R.id.content_main);
+        } else {
+            mCurrentFragment = mQuestionFragment;
+        }
     }
 
     @Override
@@ -82,6 +93,7 @@ public class MainActivity extends BaseActivity
         if ((mUser = APP.getUser(this)) == null) {
             mUserName.setText(R.string.click_to_login);
             mUserName.setOnClickListener(new ToLogin());
+            mUserPortrait.setOnClickListener(new ToLogin());
         } else {
             String name = mUser.getNickName();
             if (name == null) {
@@ -90,6 +102,7 @@ public class MainActivity extends BaseActivity
                 mUserName.setText(name);
             }
             mUserName.setOnClickListener(new ToDetails());
+            mUserPortrait.setOnClickListener(new ToDetails());
         }
     }
 
@@ -124,10 +137,14 @@ public class MainActivity extends BaseActivity
     private void initNavHeader() {
         View headerView = mNavigationView.getHeaderView(0);
         mUserName = (TextView) headerView.findViewById(R.id.tv_user_name);
+        mUserPortrait = (ImageView) headerView.findViewById(R.id.iv_user_portrait);
     }
 
     private void initToolbar() {
         setSupportActionBar(mToolbar);
+        TextView title = ToolbarUtils.getToolbarTitleView(this, mToolbar);
+        if (title != null)
+            title.setTypeface(Typeface.SERIF);
     }
 
     @Override
@@ -144,9 +161,14 @@ public class MainActivity extends BaseActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(item);
+        mSearchView.setSubmitButtonEnabled(true);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                // TODO 搜索
+                if (mCurrentFragment instanceof QuestionFragment) {
+                    ((QuestionFragment) mCurrentFragment).search(query);
+                }
                 return false;
             }
 
@@ -212,6 +234,10 @@ public class MainActivity extends BaseActivity
 
     public FloatingActionButton getFab() {
         return mFab;
+    }
+
+    public AppBarLayout getAppBar() {
+        return mAppBar;
     }
 
     private class ToLogin implements View.OnClickListener {
