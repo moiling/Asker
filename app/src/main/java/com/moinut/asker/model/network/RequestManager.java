@@ -190,6 +190,12 @@ public enum RequestManager {
         return emitObservable(observable, subscriber);
     }
 
+    public Subscription updatePortrait(Subscriber<String> subscriber, String token, String portrait) {
+        Observable<String> observable = mApiService.updatePortrait(token, portrait)
+                .map(new ApiWrapperFunc<>());
+        return emitObservable(observable, subscriber);
+    }
+
     public Subscription answer(Subscriber<String> subscriber, String token, int questionId, String content) {
         Observable<String> observable = mApiService.answer(token, questionId, content)
                 .map(new ApiWrapperFunc<>());

@@ -147,4 +147,11 @@ public interface ApiService {
             @Field("answerId") int answerId,
             @Field("type") String type
     );
+
+    @FormUrlEncoded
+    @POST(Api.API_UPDATE_PORTRAIT)
+    Observable<ApiWrapper<String>> updatePortrait(
+            @Field("token") String token,
+            @Field("portrait") String portrait
+    );
 }

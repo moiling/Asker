@@ -16,7 +16,7 @@ public interface UpDownloadService {
     @Deprecated
     String TEST_PIC_URL = "http://qlogo1.store.qq.com/qzone/896001088/896001088/100?1446739988";
     @Deprecated
-    String TEST_UPLOAD_URL = "http://www.moinut.com/api/test/upload.php";
+    String TEST_UPLOAD_URL = "http://www.moinut.com/api/default_portrait/upload.php";
 
     @GET
     Observable<ResponseBody> download(@Url String url);

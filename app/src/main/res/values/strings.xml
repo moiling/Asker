@@ -98,5 +98,6 @@
     <string name="confirm_password">Confirm password</string>
     <string name="password_must_same">Not the same password.</string>
     <string name="question_no">No Questions.</string>
+    <string name="input_for_search">What\'s your want?</string>
 
 </resources>

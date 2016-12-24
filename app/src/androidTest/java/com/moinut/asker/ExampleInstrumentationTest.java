@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 /**
- * Instrumentation test, which will execute on an Android device.
+ * Instrumentation default_portrait, which will execute on an Android device.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentationTest {
     @Test
     public void useAppContext() throws Exception {
-        // Context of the app under test.
+        // Context of the app under default_portrait.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.moinut.asker", appContext.getPackageName());

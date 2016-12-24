@@ -1,8 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.moinut.asker.ui.fragment.SearchFragment">
+
+    <Space
+        android:id="@+id/space_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp" />
 
     <ImageView
         android:src="@drawable/image_working"
@@ -11,5 +16,24 @@
         android:layout_marginRight="56dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    
+    <!--
+    <android.support.design.widget.TextInputLayout
+        android:layout_below="@id/space_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
 
-</FrameLayout>
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:hint="@string/input_for_search"/>
+
+    </android.support.design.widget.TextInputLayout>-->
+
+
+</RelativeLayout>

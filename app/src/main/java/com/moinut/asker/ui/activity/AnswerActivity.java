@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.event.AnswerEvent;
@@ -83,9 +84,13 @@ public class AnswerActivity extends BaseActivity implements
         initToolbar();
         initRecycler();
         mFab.setOnClickListener(view -> {
-            Intent intent = new Intent(this, DoAnswerActivity.class);
-            intent.putExtra(Const.INTENT_QUESTION, mQuestion.getId());
-            startActivity(intent);
+            if (APP.getUser(this) != null) {
+                Intent intent = new Intent(this, DoAnswerActivity.class);
+                intent.putExtra(Const.INTENT_QUESTION, mQuestion.getId());
+                startActivity(intent);
+            } else {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
         });
     }
 

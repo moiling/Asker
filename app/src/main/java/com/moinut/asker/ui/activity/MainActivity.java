@@ -1,6 +1,7 @@
 package com.moinut.asker.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -8,6 +9,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,9 +24,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
+import com.moinut.asker.event.ExitEvent;
+import com.moinut.asker.event.LoginEvent;
+import com.moinut.asker.event.UpdatePortraitEvent;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.ui.fragment.MeFragment;
 import com.moinut.asker.ui.fragment.QuestionFragment;
@@ -31,6 +39,9 @@ import com.moinut.asker.ui.fragment.SearchFragment;
 import com.moinut.asker.ui.fragment.StarFragment;
 import com.moinut.asker.utils.FragUtils;
 import com.moinut.asker.utils.ToolbarUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -92,10 +103,13 @@ public class MainActivity extends BaseActivity
     private void initUser() {
         if ((mUser = APP.getUser(this)) == null) {
             mUserName.setText(R.string.click_to_login);
+            loadPortrait(null);
             mUserName.setOnClickListener(new ToLogin());
             mUserPortrait.setOnClickListener(new ToLogin());
         } else {
             String name = mUser.getNickName();
+            if (APP.getUser(this) != null)
+                loadPortrait(APP.getUser(this).getPortrait());
             if (name == null) {
                 mUserName.setText(R.string.please_edit_info);
             } else {
@@ -110,9 +124,7 @@ public class MainActivity extends BaseActivity
         initToolbar();
         initNavHeader();
 
-        mFab.setOnClickListener(view -> {
-            ask();
-        });
+        mFab.setOnClickListener(view -> ask());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -253,6 +265,60 @@ public class MainActivity extends BaseActivity
         @Override
         public void onClick(View v) {
             startActivity(new Intent(MainActivity.this, UserDetailActivity.class));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdatePortraitEvent(UpdatePortraitEvent event){
+        if (APP.getUser(this) != null)
+            loadPortrait(APP.getUser(this).getPortrait());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(LoginEvent event){
+        if (APP.getUser(this) != null)
+            loadPortrait(APP.getUser(this).getPortrait());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+        public void onExitEvent(ExitEvent event){
+        if (APP.getUser(this) != null)
+            loadPortrait(APP.getUser(this).getPortrait());
+    }
+
+    private void loadPortrait(String portrait) {
+        if (portrait != null) {
+            Glide.with(this)
+                    .load(portrait)
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.default_portrait)
+                    .error(R.drawable.error_portrait)
+                    .into(new BitmapImageViewTarget(mUserPortrait) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable circularBitmapDrawable =
+                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            mUserPortrait.setImageDrawable(circularBitmapDrawable);
+                        }
+                    });
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.default_portrait)
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.default_portrait)
+                    .error(R.drawable.error_portrait)
+                    .into(new BitmapImageViewTarget(mUserPortrait) {
+                        @Override
+                        protected void setResource(Bitmap resource) {
+                            RoundedBitmapDrawable circularBitmapDrawable =
+                                    RoundedBitmapDrawableFactory.create(getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            mUserPortrait.setImageDrawable(circularBitmapDrawable);
+                        }
+                    });
         }
     }
 }

@@ -17,6 +17,7 @@ public class User implements Cloneable {
     private int id;
     private String type;
     private String nickName;
+    private String portrait;
     private String date;
     private String sex;
     private String tel;
@@ -101,6 +102,14 @@ public class User implements Cloneable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
 import com.moinut.asker.config.Const;
+import com.moinut.asker.event.UpdatePortraitEvent;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
 import com.moinut.asker.model.bean.User;
@@ -13,6 +14,8 @@ import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.model.subscriber.SimpleSubscriber;
 import com.moinut.asker.model.subscriber.SubscriberListener;
 import com.moinut.asker.ui.vu.IUserInfoView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.adapter.rxjava.HttpException;
 
@@ -24,6 +27,24 @@ public class UserInfoPresenter extends BasePresenter<IUserInfoView> {
     public UserInfoPresenter(Context context, IUserInfoView iUserInfoView, String userType) {
         super(context, iUserInfoView);
         this.userType = userType;
+    }
+
+    public void updatePortrait(String token, String url) {
+        RequestManager.getInstance().updatePortrait(new SimpleSubscriber<>(context, new SubscriberListener<String>() {
+            @Override
+            public void onError(Throwable e) {
+                doUpdateError(e);
+            }
+
+            @Override
+            public void onNext(String s) {
+                if (v != null) v.onUpdateSuccess(s);
+                User user = APP.getUser(context);
+                user.setPortrait(url);
+                APP.setUser(context, user);
+                EventBus.getDefault().post(new UpdatePortraitEvent());
+            }
+        }), token, url);
     }
 
     public void updateStudent(String token, Student student) {

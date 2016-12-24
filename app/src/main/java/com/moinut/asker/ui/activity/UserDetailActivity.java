@@ -2,9 +2,12 @@ package com.moinut.asker.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.ViewStubCompat;
@@ -13,21 +16,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.moinut.asker.APP;
 import com.moinut.asker.R;
+import com.moinut.asker.config.Api;
 import com.moinut.asker.config.Const;
 import com.moinut.asker.event.ExitEvent;
+import com.moinut.asker.event.UpdatePortraitEvent;
 import com.moinut.asker.model.bean.Student;
 import com.moinut.asker.model.bean.Teacher;
 import com.moinut.asker.model.bean.UploadWrapper;
 import com.moinut.asker.model.bean.User;
 import com.moinut.asker.model.network.RequestManager;
 import com.moinut.asker.presenter.UserInfoPresenter;
-import com.moinut.asker.ui.component.widget.CircleImageView;
 import com.moinut.asker.ui.vu.IUserInfoView;
 import com.moinut.asker.utils.ToolbarUtils;
 import com.moinut.picrop.CropIntent;
@@ -36,6 +43,8 @@ import com.moinut.picrop.callback.OnCropListener;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -71,7 +80,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     @Bind(R.id.view_stub_teacher_info)
     ViewStubCompat mTeacherViewStub;
     @Bind(R.id.iv_edit_portrait)
-    CircleImageView mEditPortrait;
+    ImageView mEditPortrait;
 
     // Student
     private EditText mEditYear;
@@ -88,6 +97,13 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     private PiCrop mPiCrop;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
@@ -101,6 +117,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mUserInfoPresenter.onRelieveView();
     }
 
@@ -109,6 +126,7 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         if ((currentUser = APP.getUser(this)) != null) {
             mUserInfoPresenter = new UserInfoPresenter(this, this, currentUser.getType());
             mToken = currentUser.getToken();
+            loadPortrait(currentUser.getPortrait());
         } else {
             Toast.makeText(this, R.string.un_login_how_to_come_in, Toast.LENGTH_SHORT).show();
             finish();
@@ -160,6 +178,9 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
                                         @Override
                                         public void onNext(UploadWrapper uploadWrapper) {
                                             Log.i(TAG, "onNext: " + uploadWrapper.toString());
+                                            if (uploadWrapper.getCode() == Api.API_STATUS_SUCCESS) {
+                                                mUserInfoPresenter.updatePortrait(mToken, uploadWrapper.getUrl());
+                                            }
                                         }
                                     }, picUri);
                                 }
@@ -377,4 +398,47 @@ public class UserDetailActivity extends BaseActivity implements IUserInfoView {
         super.onActivityResult(requestCode, resultCode, data);
         mPiCrop.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdatePortraitEvent(UpdatePortraitEvent event){
+        if (APP.getUser(this) != null)
+            loadPortrait(APP.getUser(this).getPortrait());
+    }
+
+    private void loadPortrait(String portrait) {
+        if (portrait != null) {
+            Glide.with(this)
+                    .load(portrait)
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.default_portrait)
+                    .error(R.drawable.error_portrait)
+                    .into(new BitmapImageViewTarget(mEditPortrait) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    mEditPortrait.setImageDrawable(circularBitmapDrawable);
+                }
+            });
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.default_portrait)
+                    .asBitmap()
+                    .centerCrop()
+                    .placeholder(R.drawable.default_portrait)
+                    .error(R.drawable.error_portrait)
+                    .into(new BitmapImageViewTarget(mEditPortrait) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    mEditPortrait.setImageDrawable(circularBitmapDrawable);
+                }
+            });
+        }
+    }
+
 }

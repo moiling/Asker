@@ -16,7 +16,9 @@ public class QuestionFragment extends BaseQuestionFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter.addHeader(new QuestionListHeader());
+        if (mAdapter.getHeaderCount() == 0) {
+            mAdapter.addHeader(new QuestionListHeader());
+        }
     }
 
     @Override
@@ -26,6 +28,9 @@ public class QuestionFragment extends BaseQuestionFragment {
 
     @Override
     public void onRefresh() {
+        if (mAdapter.getHeaderCount() == 0) {
+            mAdapter.addHeader(new QuestionListHeader());
+        }
         if (APP.getUser(getContext()) == null)
             getQuestionPresenter().onAllQuestionsRefresh(null);
         else
@@ -41,6 +46,9 @@ public class QuestionFragment extends BaseQuestionFragment {
     }
 
     public void search(String search) {
+        if (mAdapter.getHeaderCount() > 0) {
+            mAdapter.removeHeader(mAdapter.getHeader(0));
+        }
         if (APP.getUser(getContext()) == null)
             getQuestionPresenter().searchAllQuestions(search, null);
         else

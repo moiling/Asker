@@ -6,13 +6,20 @@
     android:background="@color/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.moinut.asker.ui.component.widget.CircleImageView
+    <ImageView
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="22dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/circle"/>
+
+    <ImageView
         android:id="@+id/iv_user_portrait"
         android:layout_centerVertical="true"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/test"
+        android:src="@drawable/default_portrait"
         android:layout_marginLeft="24dp"/>
 
     <TextView

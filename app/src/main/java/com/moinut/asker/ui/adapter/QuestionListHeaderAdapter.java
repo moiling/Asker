@@ -15,7 +15,7 @@ import com.moinut.asker.R;
 public class QuestionListHeaderAdapter extends LoopPagerAdapter {
 
     private int[] imgs = {
-            // R.drawable.img1,
+            R.drawable.img1,
             R.drawable.img2,
             R.drawable.img3,
             R.drawable.img4,

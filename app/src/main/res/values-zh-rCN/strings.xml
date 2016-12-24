@@ -98,5 +98,5 @@
     <string name="confirm_password">确认密码</string>
     <string name="password_must_same">密码不相同</string>
     <string name="question_no">没有任何提问信息</string>
-
+    <string name="input_for_search">你想搜索什么呢？</string>
 </resources>

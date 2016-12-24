@@ -19,4 +19,5 @@ public class Api {
     public static final String API_LIKE_ANSWER          = "/asker/likeAnswer.php";
     public static final String API_UPLOAD               = "/asker/upload.php";
     public static final String API_SEARCH_ALL_QUESTIONS = "/asker/searchFromAllQuestions.php";
+    public static final String API_UPDATE_PORTRAIT      = "/asker/updatePortrait.php";
 }

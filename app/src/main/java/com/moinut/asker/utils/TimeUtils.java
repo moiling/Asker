@@ -104,7 +104,7 @@ public class TimeUtils {
     public static String convertTimeToFormat(Date date, long timeStamp) {
         long curTime = new Date().getTime();
         long delta = (curTime - timeStamp) / 1000;
-        if (delta > 0) {
+        if (delta >= 0) {
             if (delta / TimeUtils.SECOND < 1) {
                 //return delta + "秒前";
                 return "刚刚";
